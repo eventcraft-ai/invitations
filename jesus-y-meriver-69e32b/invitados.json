@@ -1,12 +1,1 @@
-[
-  {
-    "idRegistro": "EC-14JSHT",
-    "fechaHora": "2026-11-10 06:06",
-    "nombreInvitado": "TEST",
-    "asistencia": "Sí",
-    "boletosConfirmados": 2,
-    "mesaAsignada": "Mesa General",
-    "mensajeParaAnfitriones": "",
-    "estadoCheckIn": "PENDIENTE"
-  }
-]
+[{"idRegistro":"EC-14JSHT","fechaHora":"2026-11-10 00:07","nombreInvitado":"TEST","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa General","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"}]
