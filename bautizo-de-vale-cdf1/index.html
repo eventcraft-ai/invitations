@@ -15,7 +15,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- QRCode.js & html2canvas para Pase de Acceso QR Descargable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -27,9 +27,9 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #FFF9FB;
-            color: #371B26;
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #FAF5FF;
+            color: #4C1D95;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -50,7 +50,7 @@
             justify-content: center;
             padding: 24px;
             text-align: center;
-            background: radial-gradient(circle at center, #FFFFFF 0%, #FFF9FB 100%);
+            background: radial-gradient(circle at center, #FFFFFF 0%, #FAF5FF 100%);
             transition: opacity 0.65s ease;
         }
         .ec-envelope-card {
@@ -71,8 +71,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: #D81B60;
-            color: #FFF9FB;
+            background-color: #7C3AED;
+            color: #FAF5FF;
             border: 2px solid rgba(255,255,255,0.35);
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             align-items: center;
@@ -187,7 +187,7 @@
         }
         .ec-title {
             font-size: clamp(1.9rem, 4.5vw, 2.5rem);
-            color: #D81B60;
+            color: #7C3AED;
             margin: 0 0 24px 0;
             font-weight: 600;
         }
@@ -218,8 +218,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #D81B6018;
-            color: #D81B60;
+            background-color: #7C3AED18;
+            color: #7C3AED;
         }
         .ec-badge {
             display: inline-block;
@@ -229,8 +229,8 @@
             letter-spacing: 0.16em;
             padding: 5px 12px;
             border-radius: 999px;
-            background-color: #D4AF3725;
-            color: #D81B60;
+            background-color: #C4B5FD25;
+            color: #7C3AED;
         }
 
         .ec-btn-primary {
@@ -239,8 +239,8 @@
             padding: 15px 24px;
             border-radius: 16px;
             border: none;
-            background-color: #D81B60;
-            color: #FFF9FB;
+            background-color: #7C3AED;
+            color: #FAF5FF;
             font-weight: 600;
             font-size: 0.82rem;
             text-transform: uppercase;
@@ -288,8 +288,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #D81B60;
-            color: #FFF9FB;
+            background-color: #7C3AED;
+            color: #FAF5FF;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .ec-timeline-content {
@@ -324,8 +324,8 @@
             padding: 14px 16px;
             border-radius: 14px;
             border: 1px solid rgba(128,128,128,0.32);
-            background-color: #FFF9FB;
-            color: #371B26;
+            background-color: #FAF5FF;
+            color: #4C1D95;
             font-family: inherit;
             font-size: 0.95rem;
             outline: none;
@@ -355,15 +355,15 @@
             padding: 15px;
             border-radius: 16px;
             border: 2px solid rgba(128,128,128,0.28);
-            background-color: #FFF9FB;
+            background-color: #FAF5FF;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.92rem;
             text-align: center;
         }
         .ec-radio-card.active {
-            border-color: #D81B60;
-            background-color: #D81B6014;
+            border-color: #7C3AED;
+            background-color: #7C3AED14;
         }
 
         @keyframes pulseSlow {
@@ -698,12 +698,12 @@
     <div id="digital-envelope">
         <div class="ec-envelope-card">
             <p class="ec-eyebrow" style="letter-spacing: 0.2em; font-weight: 700;">👑 XV AÑOS</p>
-            <h1 class="heading-font" style="font-size: 2.5rem; color: #D81B60; margin: 8px 0;">Mis XV Valentina</h1>
+            <h1 class="heading-font" style="font-size: 2.5rem; color: #7C3AED; margin: 8px 0;">Mis XV Valentina</h1>
             <p class="ec-eyebrow" style="margin-bottom: 22px;">Sábado 28 de Noviembre de 2026</p>
 
-            <div id="envelope-guest-badge" class="ec-hidden" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #D81B6012; border: 1px solid #D81B6030;">
+            <div id="envelope-guest-badge" class="ec-hidden" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #7C3AED12; border: 1px solid #7C3AED30;">
                 <p class="ec-eyebrow" style="margin-bottom: 4px;">Invitación Personal para</p>
-                <p id="envelope-guest-name" class="heading-font" style="font-size: 1.3rem; font-weight: 600; color: #D81B60; margin: 0;"></p>
+                <p id="envelope-guest-name" class="heading-font" style="font-size: 1.3rem; font-weight: 600; color: #7C3AED; margin: 0;"></p>
                 <p id="envelope-guest-passes" style="font-size: 0.8rem; opacity: 0.85; margin: 4px 0 0 0;"></p>
             </div>
 
@@ -763,11 +763,11 @@
 
     <!-- 4. FRASE O HISTORIA PRINCIPAL -->
     <section class="ec-section ec-center" style="max-width: 680px;">
-    <div style="font-size: 2.2rem; opacity: 0.35; color: #D81B60;">❝</div>
+    <div style="font-size: 2.2rem; opacity: 0.35; color: #7C3AED;">❝</div>
     <p class="heading-font" style="font-size: clamp(1.25rem, 3.2vw, 1.6rem); font-style: italic; line-height: 1.65; margin: 12px 0;">
         Quince años llenos de ilusiones, sonrisas y sueños por cumplir. Hoy celebro el inicio de una nueva y hermosa etapa, y no hay nada más especial que compartirlo con las personas que más quiero.
     </p>
-    <div style="width: 64px; height: 2px; margin: 24px auto 0 auto; opacity: 0.4; background-color: #D81B60;"></div>
+    <div style="width: 64px; height: 2px; margin: 24px auto 0 auto; opacity: 0.4; background-color: #7C3AED;"></div>
 </section>
 
                 <section class="ec-section ec-center">
@@ -804,7 +804,7 @@
                                     </svg>
                                 </div>
                                 <p class="ec-eyebrow">17:00 HRS</p>
-                                <h3 class="heading-font" style="font-size: 1.65rem; font-weight: 600; color: #D81B60; margin: 6px 0;">Misa de Acción de Gracias</h3>
+                                <h3 class="heading-font" style="font-size: 1.65rem; font-weight: 600; color: #7C3AED; margin: 6px 0;">Misa de Acción de Gracias</h3>
                                 <p style="font-weight: 600; font-size: 1.02rem; margin: 4px 0;">Templo de San Francisco</p>
                                 <p style="font-size: 0.88rem; opacity: 0.75; margin-bottom: 20px;">Centro Histórico</p>
                             </div>
@@ -825,7 +825,7 @@
                                     </svg>
                                 </div>
                                 <p class="ec-eyebrow">19:30 HRS</p>
-                                <h3 class="heading-font" style="font-size: 1.65rem; font-weight: 600; color: #D81B60; margin: 6px 0;">Recepción &amp; Gala de Mis XV</h3>
+                                <h3 class="heading-font" style="font-size: 1.65rem; font-weight: 600; color: #7C3AED; margin: 6px 0;">Recepción &amp; Gala de Mis XV</h3>
                                 <p style="font-weight: 600; font-size: 1.02rem; margin: 4px 0;">Salón Real Imperial</p>
                                 <p style="font-size: 0.88rem; opacity: 0.75; margin-bottom: 20px;">Blvd. Las Lomas #450</p>
                             </div>
@@ -936,13 +936,13 @@
     <div style="font-size: 1.8rem; margin-bottom: 8px;">🛍️</div>
     <h4 style="font-weight: 600; font-size: 1.05rem; margin: 0;">Mesa de Regalos Liverpool</h4>
     <p style="font-size: 0.8rem; opacity: 0.7; margin: 6px 0 12px 0;">Evento #51294830</p>
-    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; text-decoration: underline; color: #D81B60;">Ver Mesa de Regalos →</span>
+    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; text-decoration: underline; color: #7C3AED;">Ver Mesa de Regalos →</span>
 </a>
 <a href="https://www.amazon.com.mx/wedding" target="_blank" rel="noopener" class="ec-card ec-center" style="text-decoration: none; color: inherit; display: block;">
     <div style="font-size: 1.8rem; margin-bottom: 8px;">📦</div>
     <h4 style="font-weight: 600; font-size: 1.05rem; margin: 0;">Wishlist Amazon</h4>
     <p style="font-size: 0.8rem; opacity: 0.7; margin: 6px 0 12px 0;">Lista de Deseos</p>
-    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; text-decoration: underline; color: #D81B60;">Ver Mesa de Regalos →</span>
+    <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; text-decoration: underline; color: #7C3AED;">Ver Mesa de Regalos →</span>
 </a>
                 </div>
                 <div class="ec-card ec-center" style="margin-top: 20px;">
@@ -957,7 +957,7 @@
     <button type="button" onclick="copyClabe('012180015982341098')" class="ec-btn-primary" style="max-width: 280px; margin: 0 auto;">
         📋 Copiar CLABE con un toque
     </button>
-    <p id="clabe-toast" class="ec-hidden" style="font-size: 0.82rem; font-weight: 600; margin-top: 10px; color: #D81B60;">
+    <p id="clabe-toast" class="ec-hidden" style="font-size: 0.82rem; font-weight: 600; margin-top: 10px; color: #7C3AED;">
         ✓ ¡CLABE copiada al portapapeles!
     </p>
 </div>
@@ -973,7 +973,7 @@
                 <p style="font-size: 0.8rem; font-style: italic; opacity: 0.72; margin-top: 8px;">Adoramos a sus pequeños, pero este será un evento exclusivamente para adultos.</p>
             </div>
 
-            <div id="rsvp-assigned-summary" class="ec-center" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #D81B6012; border: 1px solid #D81B6028;">
+            <div id="rsvp-assigned-summary" class="ec-center" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #7C3AED12; border: 1px solid #7C3AED28;">
                 <p id="rsvp-assigned-text" style="font-size: 0.9rem; font-weight: 600; margin: 0;"></p>
             </div>
 
@@ -987,11 +987,11 @@
                     <label class="ec-label">¿Nos acompañarás? *</label>
                     <div class="ec-radio-group">
                         <label id="lbl-att-yes" class="ec-radio-card active">
-                            <input type="radio" name="attendance" value="yes" checked onchange="toggleAttendanceFields()" style="accent-color: #D81B60;" />
+                            <input type="radio" name="attendance" value="yes" checked onchange="toggleAttendanceFields()" style="accent-color: #7C3AED;" />
                             <span>✨ Sí, ahí estaré</span>
                         </label>
                         <label id="lbl-att-no" class="ec-radio-card">
-                            <input type="radio" name="attendance" value="no" onchange="toggleAttendanceFields()" style="accent-color: #D81B60;" />
+                            <input type="radio" name="attendance" value="no" onchange="toggleAttendanceFields()" style="accent-color: #7C3AED;" />
                             <span>💌 Lo siento, no podré asistir</span>
                         </label>
                     </div>
@@ -1029,9 +1029,9 @@
             </div>
 
             <div id="digital-qr-pass-wrapper" class="ec-hidden" style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(128,128,128,0.2);">
-                <div id="digital-qr-pass-card" class="ec-center" style="padding: 28px 20px; border-radius: 24px; border: 2px solid #D81B60; background-color: #FFF9FB;">
+                <div id="digital-qr-pass-card" class="ec-center" style="padding: 28px 20px; border-radius: 24px; border: 2px solid #7C3AED; background-color: #FAF5FF;">
                     <p class="ec-eyebrow" style="margin-bottom: 4px;">Pase de Acceso Personal e Intransferible</p>
-                    <h3 class="heading-font" style="font-size: 1.8rem; font-weight: 600; color: #D81B60; margin: 4px 0;">
+                    <h3 class="heading-font" style="font-size: 1.8rem; font-weight: 600; color: #7C3AED; margin: 4px 0;">
                         Mis XV Valentina
                     </h3>
                     <p style="font-size: 0.8rem; opacity: 0.75; margin: 0 0 18px 0;">Sábado 28 de Noviembre de 2026</p>
@@ -1042,11 +1042,11 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(128,128,128,0.15); font-size: 0.8rem;">
                             <div>
                                 <span style="display: block; opacity: 0.65; text-transform: uppercase;">Boletos Confirmados</span>
-                                <strong id="pass-confirmed-count" style="font-size: 1.05rem; color: #D81B60;"></strong>
+                                <strong id="pass-confirmed-count" style="font-size: 1.05rem; color: #7C3AED;"></strong>
                             </div>
                             <div>
                                 <span style="display: block; opacity: 0.65; text-transform: uppercase;">Ubicación Asignada</span>
-                                <strong id="pass-table-label" style="font-size: 1.05rem; color: #D81B60;"></strong>
+                                <strong id="pass-table-label" style="font-size: 1.05rem; color: #7C3AED;"></strong>
                             </div>
                         </div>
                     </div>
@@ -1446,7 +1446,7 @@
                         text: qrData,
                         width: 170,
                         height: 170,
-                        colorDark: "#D81B60",
+                        colorDark: "#7C3AED",
                         colorLight: "#ffffff",
                         correctLevel: QRCode.CorrectLevel.M
                     });
