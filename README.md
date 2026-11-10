@@ -1,0 +1,2 @@
+# invitations
+Evencraft AI Repository
