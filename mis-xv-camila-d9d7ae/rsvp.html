@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoja RSVP en Vivo - Mis XV Camila</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; }
+        header { background: #065f46; color: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .btn { padding: 9px 14px; border-radius: 10px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; }
+        .btn-light { background: #fff; color: #065f46; }
+        .btn-ghost { background: rgba(255,255,255,0.18); color: #fff; }
+        main { max-width: 1150px; margin: 0 auto; padding: 24px 16px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .stat-card { background: #fff; padding: 16px; border-radius: 14px; border: 1px solid #e2e8f0; }
+        .table-wrap { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+        th { background: #0f172a; color: #fff; padding: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+        td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background: #f1f5f9; }
+        .yes { color: #047857; font-weight: 700; }
+        .no { color: #be123c; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.85;">EventCraft AI • Cloud Sheets Sync</div>
+            <h1 style="margin: 4px 0 0 0; font-size: 18px;">📊 Confirmaciones RSVP: Mis XV Camila</h1>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="fetchCloudRsvps()" class="btn btn-ghost">🔄 Actualizar en Vivo</button>
+            <button onclick="downloadCsv()" class="btn btn-light">⬇️ Descargar Excel (.CSV)</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="stats">
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Total Boletos Confirmados</div>
+                <div id="stat-confirmed" style="font-size: 28px; font-weight: 800; color: #047857; margin-top: 4px;">0</div>
+            </div>
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Familias / Invitados Únicos</div>
+                <div id="stat-total" style="font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 4px;">0</div>
+            </div>
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Canal Cloud en Vivo</div>
+                <div style="font-family: monospace; font-size: 13px; margin-top: 8px;">eventcraft_rsvp_d9d7ae4b3b45</div>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID_Registro</th>
+                        <th>Fecha_Hora</th>
+                        <th>Nombre_Invitado</th>
+                        <th>Asistencia (Sí/No)</th>
+                        <th>Boletos_Confirmados</th>
+                        <th>Mesa_Asignada</th>
+                        <th>Mensaje_Para_Anfitriones</th>
+                        <th>Estado_CheckIn</th>
+                    </tr>
+                </thead>
+                <tbody id="sheet-body"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const TOPIC = "eventcraft_rsvp_d9d7ae4b3b45";
+        const initialRows = [];
+        const rowsList = [];
+
+        function normStr(s) {
+            return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+        }
+        function normId(id) {
+            return String(id || '').trim().substring(0, 8).toUpperCase();
+        }
+
+        function upsertRecord(rec) {
+            const incomingId = normId(rec.idRegistro);
+            const incomingName = normStr(rec.nombreInvitado);
+            if (!incomingId && !incomingName) return;
+
+            const existingIdx = rowsList.findIndex(item => {
+                const itemId = normId(item.idRegistro);
+                const itemName = normStr(item.nombreInvitado);
+                return (incomingId && itemId && (itemId === incomingId || itemId.startsWith(incomingId) || incomingId.startsWith(itemId))) ||
+                       (incomingName && itemName && itemName === incomingName);
+            });
+
+            const cleanRec = {
+                idRegistro: incomingId || ('EC-' + Math.random().toString(36).substring(2, 7).toUpperCase()),
+                fechaHora: rec.fechaHora || '',
+                nombreInvitado: rec.nombreInvitado || '',
+                asistencia: rec.asistencia || 'Pendiente',
+                boletosConfirmados: Number(rec.boletosConfirmados || 0),
+                mesaAsignada: rec.mesaAsignada || 'Mesa General',
+                mensajeParaAnfitriones: rec.mensajeParaAnfitriones || '',
+                estadoCheckIn: rec.estadoCheckIn || 'PENDIENTE'
+            };
+
+            if (existingIdx >= 0) {
+                const prev = rowsList[existingIdx];
+                rowsList[existingIdx] = {
+                    idRegistro: prev.idRegistro || cleanRec.idRegistro,
+                    fechaHora: cleanRec.fechaHora || prev.fechaHora,
+                    nombreInvitado: cleanRec.nombreInvitado || prev.nombreInvitado,
+                    asistencia: cleanRec.asistencia || prev.asistencia,
+                    boletosConfirmados: cleanRec.boletosConfirmados,
+                    mesaAsignada: (cleanRec.mesaAsignada && cleanRec.mesaAsignada !== 'Mesa General') ? cleanRec.mesaAsignada : (prev.mesaAsignada || 'Mesa General'),
+                    mensajeParaAnfitriones: cleanRec.mensajeParaAnfitriones || prev.mensajeParaAnfitriones,
+                    estadoCheckIn: cleanRec.estadoCheckIn || prev.estadoCheckIn
+                };
+            } else {
+                rowsList.push(cleanRec);
+            }
+        }
+
+        initialRows.forEach(r => upsertRecord(r));
+
+        async function fetchCloudRsvps() {
+            // 1. Leer lista permanente desde el repo de Git (<slug>/invitados.json)
+            try {
+                const gitRes = await fetch("https://raw.githubusercontent.com/eventcraft-ai/invitations/main/mis-xv-camila-d9d7ae/invitados.json?t=" + Date.now(), { cache: 'no-store' });
+                if (gitRes.ok) {
+                    const gitList = await gitRes.json();
+                    if (Array.isArray(gitList)) {
+                        gitList.forEach(rec => upsertRecord(rec));
+                    }
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+            // 2. Complementar con notificaciones en tiempo real
+            try {
+                const res = await fetch("https://ntfy.sh/" + TOPIC + "/json?poll=1&since=all");
+                const text = await res.text();
+                text.split('\n').forEach(line => {
+                    if (!line.trim()) return;
+                    try {
+                        const env = JSON.parse(line);
+                        if (env.event === 'message' && env.message && env.message.startsWith('{')) {
+                            const rec = JSON.parse(env.message);
+                            upsertRecord(rec);
+                        }
+                    } catch (e) {}
+                });
+            } catch (err) {
+                console.warn(err);
+            }
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('sheet-body');
+            tbody.innerHTML = '';
+            let confirmedTickets = 0;
+
+            rowsList.forEach(r => {
+                if (String(r.asistencia).toLowerCase().startsWith('s')) {
+                    confirmedTickets += Number(r.boletosConfirmados || 0);
+                }
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family: monospace; font-size: 12px;">${r.idRegistro || ''}</td>
+                    <td style="font-size: 12px; color: #64748b;">${r.fechaHora || ''}</td>
+                    <td style="font-weight: 700;">${r.nombreInvitado || ''}</td>
+                    <td class="${String(r.asistencia).startsWith('S') ? 'yes' : 'no'}">${r.asistencia || ''}</td>
+                    <td style="font-weight: 700;">${r.boletosConfirmados || 0}</td>
+                    <td>${r.mesaAsignada || ''}</td>
+                    <td style="font-size: 12px;">${r.mensajeParaAnfitriones || ''}</td>
+                    <td style="font-size: 12px; font-weight: 700;">${r.estadoCheckIn || 'PENDIENTE'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-confirmed').textContent = confirmedTickets;
+            document.getElementById('stat-total').textContent = rowsList.length;
+        }
+
+        function downloadCsv() {
+            const headers = ['ID_Registro','Fecha_Hora','Nombre_Invitado','Asistencia (Sí/No)','Boletos_Confirmados','Mesa_Asignada','Mensaje_Para_Anfitriones','Estado_CheckIn'];
+            const lines = [headers.join(',')];
+            rowsList.forEach(r => {
+                const row = [
+                    r.idRegistro, r.fechaHora, r.nombreInvitado, r.asistencia,
+                    r.boletosConfirmados, r.mesaAsignada, r.mensajeParaAnfitriones, r.estadoCheckIn
+                ].map(v => '"' + String(v || '').replace(/"/g, '""') + '"');
+                lines.push(row.join(','));
+            });
+            const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Confirmaciones_RSVP.csv';
+            a.click();
+        }
+
+        renderTable();
+        fetchCloudRsvps();
+        setInterval(fetchCloudRsvps, 6000);
+    </script>
+</body>
+</html>
