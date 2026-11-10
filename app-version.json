@@ -1,9 +1,9 @@
 {
-  "minRequiredVersionCode": 17,
-  "latestVersionName": "1.2.5",
+  "minRequiredVersionCode": 18,
+  "latestVersionName": "1.2.6",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=com.eventcraft.ai",
   "titleEs": "Actualización Obligatoria Disponible",
-  "messageEs": "Hay una nueva versión obligatoria de EventCraft AI con el nuevo servidor permanente de invitaciones. Actualiza ahora en Google Play para continuar.",
+  "messageEs": "Hay una nueva versión obligatoria de EventCraft AI con el nuevo servidor permanente de invitaciones, música personalizada y control de acceso QR mejorado. Actualiza ahora en Google Play para continuar.",
   "titleEn": "Mandatory Update Required",
-  "messageEn": "A mandatory update of EventCraft AI is available with the new permanent invitation server. Please update on Google Play to continue."
+  "messageEn": "A mandatory update of EventCraft AI is available with the permanent invitation server, custom audio, and enhanced QR access control. Please update on Google Play to continue."
 }
