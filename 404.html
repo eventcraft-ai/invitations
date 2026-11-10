@@ -2,12 +2,15 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abriendo invitación... | EventCraft AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cargando Invitación | EventCraft AI</title>
 <style>
-  body { margin:0; background:#0F0C18; color:#F8E3A1; font-family:system-ui,-apple-system,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; }
-  .spinner { width:44px; height:44px; border:3px solid rgba(248,227,161,0.2); border-top-color:#F8E3A1; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:18px; }
+  body { background:#0F0A1C; color:#F5E6C8; font-family:system-ui,-apple-system,sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; text-align:center; }
+  .box { max-width:380px; padding:28px; }
+  .spinner { width:42px; height:42px; border:3px solid rgba(212,175,55,0.25); border-top-color:#D4AF37; border-radius:50%; animation:spin 0.9s linear infinite; margin:0 auto 18px; }
   @keyframes spin { to { transform:rotate(360deg); } }
+  h2 { font-size:20px; margin:0 0 8px; color:#D4AF37; }
+  p { font-size:14px; opacity:0.8; line-height:1.5; margin:0; }
 </style>
 <script>
 (async function() {
@@ -15,21 +18,30 @@
     var path = window.location.pathname.replace(/^\/invitations\/?/, '').replace(/\/+$/, '').replace(/\/index\.html$/, '');
     if (!path) return;
     var rawUrl = 'https://raw.githubusercontent.com/eventcraft-ai/invitations/main/' + path + '/index.html?t=' + Date.now();
-    var res = await fetch(rawUrl, { cache: 'no-store' });
-    if (res.ok) {
-      var html = await res.text();
-      document.open();
-      document.write(html);
-      document.close();
-      return;
+    for (var attempt = 0; attempt < 6; attempt++) {
+      var res = await fetch(rawUrl, { cache: 'no-store' });
+      if (res.ok) {
+        var html = await res.text();
+        if (html && html.indexOf('<html') !== -1) {
+          document.open();
+          document.write(html);
+          document.close();
+          return;
+        }
+      }
+      await new Promise(function(r) { setTimeout(r, 1500); });
     }
-  } catch (e) {}
-  setTimeout(function() { window.location.reload(); }, 3000);
+  } catch (e) {
+    console.error(e);
+  }
 })();
 </script>
 </head>
 <body>
-  <div class="spinner"></div>
-  <div style="font-size:18px;font-weight:600;">Cargando tu invitación interactiva...</div>
+  <div class="box">
+    <div class="spinner"></div>
+    <h2>Abriendo tu invitación...</h2>
+    <p>Preparando experiencia interactiva de EventCraft AI.</p>
+  </div>
 </body>
 </html>
