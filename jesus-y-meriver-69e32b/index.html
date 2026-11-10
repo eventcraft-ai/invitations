@@ -705,7 +705,11 @@
     </div>
 
     <!-- 2. REPRODUCTOR DE MÚSICA FLOTANTE -->
-    <audio id="bg-music" preload="auto" loop src="content://com.android.providers.downloads.documents/document/msf%3A20038"></audio>
+    <audio id="bg-music" preload="auto" loop crossorigin="anonymous" src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/jesus-y-meriver-69e32b/musica.mp3">
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/jesus-y-meriver-69e32b/musica.mp3" type="audio/mpeg" />
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/jesus-y-meriver-69e32b/musica.mp3" type="audio/mpeg" />
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/assets/vals_cielo_instrumental.mp3" type="audio/mpeg" />
+</audio>
 <button id="music-toggle-btn" onclick="toggleMusic()" aria-label="Music" class="ec-hidden">
     <span id="music-icon">🎵</span>
 </button>
@@ -850,7 +854,6 @@
             </section>
     <section class="ec-section ec-center">
     <div class="ec-card" style="padding: 36px 24px;">
-        <p class="ec-eyebrow">Dress Code</p>
         <h2 class="ec-title heading-font" style="margin-bottom: 12px;">Código de Vestimenta</h2>
         <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 16px;">Libre</p>
         
@@ -1265,6 +1268,36 @@
             }
         }
 
+        function tryPlayAudioWithFallback(audio) {
+            if (!audio) return;
+            const icon = document.getElementById('music-icon');
+            audio.volume = 0.85;
+            const p = audio.play();
+            if (p !== undefined) {
+                p.then(() => {
+                    if (icon) icon.textContent = '🎵';
+                }).catch(() => {
+                    const folderUrl = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/' + EVENT_SLUG + '/musica.mp3';
+                    const defaultUrl = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/assets/vals_cielo_instrumental.mp3';
+                    if (audio.src !== folderUrl) {
+                        audio.src = folderUrl;
+                        audio.load();
+                        audio.play().then(() => {
+                            if (icon) icon.textContent = '🎵';
+                        }).catch(() => {
+                            audio.src = defaultUrl;
+                            audio.load();
+                            audio.play().catch(() => {});
+                        });
+                    } else if (audio.src !== defaultUrl) {
+                        audio.src = defaultUrl;
+                        audio.load();
+                        audio.play().catch(() => {});
+                    }
+                });
+            }
+        }
+
         function openEnvelope() {
             const envelope = document.getElementById('digital-envelope');
             if (envelope) {
@@ -1277,9 +1310,7 @@
                 musicBtn.classList.remove('ec-hidden');
                 musicBtn.style.display = 'flex';
             }
-            if (audio) {
-                audio.play().catch(() => {});
-            }
+            tryPlayAudioWithFallback(audio);
         }
 
         function toggleMusic() {
@@ -1287,7 +1318,7 @@
             const icon = document.getElementById('music-icon');
             if (!audio) return;
             if (audio.paused) {
-                audio.play();
+                tryPlayAudioWithFallback(audio);
                 if (icon) icon.textContent = '🎵';
             } else {
                 audio.pause();
