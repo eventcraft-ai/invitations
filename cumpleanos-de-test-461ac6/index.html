@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Cumpleaños de Test | ¡A celebrar un año más de vida!</title>
+
+    <!-- OpenGraph Meta Tags para Miniatura Rica en WhatsApp -->
+    <meta property="og:title" content="Cumpleaños de Test - ¡A celebrar un año más de vida!" />
+    <meta property="og:description" content="Viernes 20 de Noviembre de 2026" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- QRCode.js & html2canvas para Pase de Acceso QR Descargable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FEF3C7;
+            color: #451A03;
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .heading-font {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        .ec-hidden { display: none !important; }
+        .ec-center { text-align: center; }
+
+        #digital-envelope {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            background: radial-gradient(circle at center, #FFFFFF 0%, #FEF3C7 100%);
+            transition: opacity 0.65s ease;
+        }
+        .ec-envelope-card {
+            max-width: 440px;
+            width: 100%;
+            padding: 36px 28px;
+            border-radius: 28px;
+            background-color: #FFFFFF;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22);
+            border: 1px solid rgba(128,128,128,0.18);
+        }
+
+        #music-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 900;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #B45309;
+            color: #FEF3C7;
+            border: 2px solid rgba(255,255,255,0.35);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .ec-hero {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 96px 24px 64px 24px;
+            overflow: hidden;
+            background-color: #000000;
+        }
+        .ec-hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        .ec-hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .ec-hero-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(to top, rgba(0,0,0,0.76) 0%, rgba(0,0,0,0.22) 40%, rgba(0,0,0,0.0) 70%);
+        }
+        .ec-hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .ec-hero-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            padding: 6px 18px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(8px);
+            margin-bottom: 16px;
+        }
+        .ec-hero-title {
+            font-size: clamp(2.6rem, 7vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.12;
+            margin: 0 0 14px 0;
+        }
+        .ec-hero-date {
+            font-size: 0.95rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            opacity: 0.92;
+            margin: 0 0 28px 0;
+        }
+        .ec-countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .ec-countdown-box {
+            padding: 14px 8px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .ec-countdown-num {
+            display: block;
+            font-size: 1.85rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+        .ec-countdown-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.85;
+        }
+
+        .ec-section {
+            padding: 64px 20px;
+            max-width: 880px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        .ec-eyebrow {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.28em;
+            opacity: 0.7;
+            margin: 0 0 6px 0;
+        }
+        .ec-title {
+            font-size: clamp(1.9rem, 4.5vw, 2.5rem);
+            color: #B45309;
+            margin: 0 0 24px 0;
+            font-weight: 600;
+        }
+        .ec-card {
+            background-color: #FFFFFFF2;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(128,128,128,0.16);
+            border-radius: 24px;
+            padding: 28px 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            position: relative;
+            z-index: 10;
+        }
+        .ec-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 680px) {
+            .ec-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        }
+        .ec-icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin: 0 auto 14px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #B4530918;
+            color: #B45309;
+        }
+        .ec-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background-color: #78350F25;
+            color: #B45309;
+        }
+
+        .ec-btn-primary {
+            display: inline-block;
+            width: 100%;
+            padding: 15px 24px;
+            border-radius: 16px;
+            border: none;
+            background-color: #B45309;
+            color: #FEF3C7;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+        .ec-btn-primary:active { transform: scale(0.97); }
+        .ec-btn-outline {
+            display: inline-block;
+            width: 100%;
+            padding: 13px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(128,128,128,0.35);
+            background: transparent;
+            color: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .ec-timeline {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .ec-timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding-bottom: 28px;
+            position: relative;
+        }
+        .ec-timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #B45309;
+            color: #FEF3C7;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .ec-timeline-content {
+            flex: 1;
+            text-align: left;
+            padding-top: 2px;
+        }
+
+        .ec-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (min-width: 720px) {
+            .ec-gallery-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        .ec-gallery-item {
+            overflow: hidden;
+            border-radius: 18px;
+            aspect-ratio: 4 / 5;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+        .ec-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .ec-input, .ec-select, .ec-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(128,128,128,0.32);
+            background-color: #FEF3C7;
+            color: #451A03;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .ec-label {
+            display: block;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            opacity: 0.78;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .ec-radio-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 520px) {
+            .ec-radio-group { grid-template-columns: repeat(2, 1fr); }
+        }
+        .ec-radio-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            border-radius: 16px;
+            border: 2px solid rgba(128,128,128,0.28);
+            background-color: #FEF3C7;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            text-align: center;
+        }
+        .ec-radio-card.active {
+            border-color: #B45309;
+            background-color: #B4530914;
+        }
+
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .seal-pulse {
+            animation: pulseSlow 2.6s infinite ease-in-out;
+        }
+
+        /* Efectos Visuales de Fondo & Ambiente Opcional (Sutiles y Elegantes) */
+        .ec-bg-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .ec-bg-sparkles {
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 25%, rgba(255, 215, 0, 0.07) 0%, transparent 42%),
+                radial-gradient(circle at 50% 60%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 20% 85%, rgba(245, 158, 11, 0.07) 0%, transparent 42%),
+                radial-gradient(circle at 80% 90%, rgba(212, 175, 55, 0.08) 0%, transparent 40%);
+        }
+        .ec-bg-petals {
+            background-image: 
+                radial-gradient(ellipse at 10% 12%, rgba(244, 63, 94, 0.07) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 22%, rgba(251, 113, 133, 0.08) 0%, transparent 42%),
+                radial-gradient(circle at 50% 50%, rgba(253, 226, 228, 0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 15% 82%, rgba(244, 63, 94, 0.06) 0%, transparent 40%),
+                radial-gradient(ellipse at 85% 88%, rgba(251, 113, 133, 0.07) 0%, transparent 42%);
+        }
+        .ec-bg-clouds {
+            background-image: 
+                radial-gradient(circle at 20% 15%, rgba(191, 219, 254, 0.10) 0%, transparent 45%),
+                radial-gradient(circle at 80% 25%, rgba(254, 240, 138, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 35% 60%, rgba(252, 231, 243, 0.09) 0%, transparent 45%),
+                radial-gradient(circle at 75% 85%, rgba(221, 214, 254, 0.08) 0%, transparent 42%);
+        }
+        .ec-bg-confetti {
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(239, 68, 68, 0.06) 0%, transparent 32%),
+                radial-gradient(circle at 85% 20%, rgba(245, 158, 11, 0.07) 0%, transparent 35%),
+                radial-gradient(circle at 25% 65%, rgba(59, 130, 246, 0.06) 0%, transparent 32%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.07) 0%, transparent 35%);
+        }
+        .ec-bg-celestial {
+            background-image: 
+                radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 55%),
+                radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.07) 0%, transparent 55%);
+        }
+        .ec-bg-botanical {
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(77, 124, 15, 0.07) 0%, transparent 38%),
+                radial-gradient(circle at 90% 25%, rgba(101, 163, 13, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 15% 75%, rgba(74, 93, 78, 0.07) 0%, transparent 38%),
+                radial-gradient(circle at 85% 85%, rgba(101, 163, 13, 0.06) 0%, transparent 40%);
+        }
+        .ec-bg-diamonds {
+            background-image: 
+                radial-gradient(circle at 25% 20%, rgba(244, 114, 182, 0.08) 0%, transparent 38%),
+                radial-gradient(circle at 75% 30%, rgba(212, 175, 55, 0.09) 0%, transparent 40%),
+                radial-gradient(circle at 30% 70%, rgba(192, 132, 252, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(244, 114, 182, 0.07) 0%, transparent 38%);
+        }
+        .ec-bg-parchment {
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(180, 83, 9, 0.04) 0%, transparent 75%),
+                linear-gradient(to right, rgba(180, 83, 9, 0.03) 0%, transparent 12%, transparent 88%, rgba(180, 83, 9, 0.03) 100%);
+        }
+        .ec-bg-tech {
+            background-image: 
+                linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        /* Capa de Partículas Ambientales Vivas Flotantes (Discretas y Elegantes) */
+        .ec-particles-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            overflow: hidden;
+        }
+        .ec-particle {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            will-change: transform, opacity;
+            opacity: 0.35;
+        }
+        .ec-sparkle-item {
+            bottom: -35px;
+            color: rgba(212, 175, 55, 0.75);
+            text-shadow: 0 0 4px rgba(212, 175, 55, 0.35);
+            -webkit-animation: riseAndShimmer linear infinite;
+            animation: riseAndShimmer linear infinite;
+        }
+        .ec-petal-item {
+            top: -35px;
+            filter: opacity(45%) drop-shadow(0 1px 2px rgba(244, 63, 94, 0.15));
+            -webkit-animation: fallAndSway linear infinite;
+            animation: fallAndSway linear infinite;
+        }
+        .ec-cloud-item {
+            top: -35px;
+            filter: opacity(40%) drop-shadow(0 1px 2px rgba(147, 197, 253, 0.15));
+            -webkit-animation: floatDownSoft linear infinite;
+            animation: floatDownSoft linear infinite;
+        }
+        .ec-confetti-item {
+            top: -35px;
+            filter: opacity(45%);
+            -webkit-animation: confettiFlip linear infinite;
+            animation: confettiFlip linear infinite;
+        }
+        .ec-celestial-item {
+            top: -35px;
+            filter: opacity(45%);
+            text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+            -webkit-animation: celestialDescend linear infinite;
+            animation: celestialDescend linear infinite;
+        }
+
+        @-webkit-keyframes riseAndShimmer {
+            0% {
+                -webkit-transform: translateY(0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.35;
+            }
+            85% {
+                opacity: 0.35;
+            }
+            100% {
+                -webkit-transform: translateY(-120vh) scale(1.15) rotate(180deg);
+                opacity: 0;
+            }
+        }
+        @keyframes riseAndShimmer {
+            0% {
+                transform: translateY(0) scale(0.7) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.35;
+            }
+            85% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(-120vh) scale(1.15) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes fallAndSway {
+            0% {
+                -webkit-transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.35;
+            }
+            50% {
+                -webkit-transform: translateY(55vh) translateX(25px) rotate(180deg);
+            }
+            85% {
+                opacity: 0.35;
+            }
+            100% {
+                -webkit-transform: translateY(120vh) translateX(-20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        @keyframes fallAndSway {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.35;
+            }
+            50% {
+                transform: translateY(55vh) translateX(25px) rotate(180deg);
+            }
+            85% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(120vh) translateX(-20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes floatDownSoft {
+            0% {
+                -webkit-transform: translateY(0) translateX(0) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.32;
+            }
+            85% {
+                opacity: 0.32;
+            }
+            100% {
+                -webkit-transform: translateY(120vh) translateX(30px) scale(1.05);
+                opacity: 0;
+            }
+        }
+        @keyframes floatDownSoft {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.32;
+            }
+            85% {
+                opacity: 0.32;
+            }
+            100% {
+                transform: translateY(120vh) translateX(30px) scale(1.05);
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes confettiFlip {
+            0% {
+                -webkit-transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.35;
+            }
+            90% {
+                opacity: 0.35;
+            }
+            100% {
+                -webkit-transform: translateY(120vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        @keyframes confettiFlip {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.35;
+            }
+            90% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(120vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes celestialDescend {
+            0% {
+                -webkit-transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.35;
+            }
+            80% {
+                opacity: 0.35;
+            }
+            100% {
+                -webkit-transform: translateY(120vh) scale(1.1);
+                opacity: 0;
+            }
+        }
+        @keyframes celestialDescend {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.35;
+            }
+            80% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(120vh) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        /* Overrides personalizados solicitados por el usuario mediante la IA */
+        
+    </style>
+</head>
+<body>
+
+    <!-- DETALLE DE FONDO AMBIENTAL -->
+    <div class="ec-bg-overlay ec-bg-tech"></div>
+    <div id="ec-ambient-particles" class="ec-particles-layer"><span class="ec-particle ec-sparkle-item" style="left: 4%; animation-delay: -0.0s; -webkit-animation-delay: -0.0s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.42rem;">🔷</span>
+<span class="ec-particle ec-sparkle-item" style="left: 10%; animation-delay: -1.5s; -webkit-animation-delay: -1.5s; animation-duration: 9.1s; -webkit-animation-duration: 9.1s; font-size: 0.52rem;">💠</span>
+<span class="ec-particle ec-sparkle-item" style="left: 16%; animation-delay: -3.0s; -webkit-animation-delay: -3.0s; animation-duration: 10.7s; -webkit-animation-duration: 10.7s; font-size: 0.42rem;">✦</span>
+<span class="ec-particle ec-sparkle-item" style="left: 22%; animation-delay: -4.5s; -webkit-animation-delay: -4.5s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.52rem;">🔹</span>
+<span class="ec-particle ec-sparkle-item" style="left: 28%; animation-delay: -6.0s; -webkit-animation-delay: -6.0s; animation-duration: 9.1s; -webkit-animation-duration: 9.1s; font-size: 0.42rem;">🔷</span>
+<span class="ec-particle ec-sparkle-item" style="left: 34%; animation-delay: -0.0s; -webkit-animation-delay: -0.0s; animation-duration: 10.7s; -webkit-animation-duration: 10.7s; font-size: 0.52rem;">💠</span>
+<span class="ec-particle ec-sparkle-item" style="left: 40%; animation-delay: -1.5s; -webkit-animation-delay: -1.5s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.42rem;">✦</span>
+<span class="ec-particle ec-sparkle-item" style="left: 46%; animation-delay: -3.0s; -webkit-animation-delay: -3.0s; animation-duration: 9.1s; -webkit-animation-duration: 9.1s; font-size: 0.52rem;">🔹</span>
+<span class="ec-particle ec-sparkle-item" style="left: 52%; animation-delay: -4.5s; -webkit-animation-delay: -4.5s; animation-duration: 10.7s; -webkit-animation-duration: 10.7s; font-size: 0.42rem;">🔷</span>
+<span class="ec-particle ec-sparkle-item" style="left: 58%; animation-delay: -6.0s; -webkit-animation-delay: -6.0s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.52rem;">💠</span>
+<span class="ec-particle ec-sparkle-item" style="left: 64%; animation-delay: -0.0s; -webkit-animation-delay: -0.0s; animation-duration: 9.1s; -webkit-animation-duration: 9.1s; font-size: 0.42rem;">✦</span>
+<span class="ec-particle ec-sparkle-item" style="left: 70%; animation-delay: -1.5s; -webkit-animation-delay: -1.5s; animation-duration: 10.7s; -webkit-animation-duration: 10.7s; font-size: 0.52rem;">🔹</span>
+<span class="ec-particle ec-sparkle-item" style="left: 76%; animation-delay: -3.0s; -webkit-animation-delay: -3.0s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.42rem;">🔷</span>
+<span class="ec-particle ec-sparkle-item" style="left: 82%; animation-delay: -4.5s; -webkit-animation-delay: -4.5s; animation-duration: 9.1s; -webkit-animation-duration: 9.1s; font-size: 0.52rem;">💠</span>
+<span class="ec-particle ec-sparkle-item" style="left: 88%; animation-delay: -6.0s; -webkit-animation-delay: -6.0s; animation-duration: 10.7s; -webkit-animation-duration: 10.7s; font-size: 0.42rem;">✦</span>
+<span class="ec-particle ec-sparkle-item" style="left: 93%; animation-delay: -0.0s; -webkit-animation-delay: -0.0s; animation-duration: 7.5s; -webkit-animation-duration: 7.5s; font-size: 0.52rem;">🔹</span></div>
+
+    <!-- 1. SOBRE DIGITAL INTERACTIVO -->
+    <div id="digital-envelope">
+        <div class="ec-envelope-card">
+            <p class="ec-eyebrow" style="letter-spacing: 0.2em; font-weight: 700;">🎂 CUMPLEAÑOS</p>
+            <h1 class="heading-font" style="font-size: 2.5rem; color: #B45309; margin: 8px 0;">Cumpleaños de Test</h1>
+            <p class="ec-eyebrow" style="margin-bottom: 22px;">Viernes 20 de Noviembre de 2026</p>
+
+            <div id="envelope-guest-badge" class="ec-hidden" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #B4530912; border: 1px solid #B4530930;">
+                <p class="ec-eyebrow" style="margin-bottom: 4px;">Invitación Personal para</p>
+                <p id="envelope-guest-name" class="heading-font" style="font-size: 1.3rem; font-weight: 600; color: #B45309; margin: 0;"></p>
+                <p id="envelope-guest-passes" style="font-size: 0.8rem; opacity: 0.85; margin: 4px 0 0 0;"></p>
+            </div>
+
+            <button type="button" onclick="openEnvelope()" class="ec-btn-primary seal-pulse">
+                🎂 Toca para abrir la invitación de Cumpleaños
+            </button>
+            <p style="font-size: 0.72rem; opacity: 0.65; margin-top: 14px;">Incluye música ambiental • Sube el volumen de tu celular</p>
+        </div>
+    </div>
+
+    <!-- 2. REPRODUCTOR DE MÚSICA FLOTANTE -->
+    <audio id="bg-music" preload="auto" loop crossorigin="anonymous" src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/cumpleanos-de-test-461ac6/musica.mp3">
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/cumpleanos-de-test-461ac6/musica.mp3" type="audio/mpeg" />
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/cumpleanos-de-test-461ac6/musica.mp3" type="audio/mpeg" />
+    <source src="https://raw.githubusercontent.com/eventcraft-ai/invitations/main/assets/vals_cielo_instrumental.mp3" type="audio/mpeg" />
+</audio>
+<button id="music-toggle-btn" onclick="toggleMusic()" aria-label="Music" class="ec-hidden">
+    <span id="music-icon">🎵</span>
+</button>
+
+    <!-- 3. PORTADA HERO CON CUENTA REGRESIVA EN TIEMPO REAL -->
+    <header class="ec-hero">
+        <div class="ec-hero-bg">
+            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Cumpleaños de Test" />
+            <div class="ec-hero-overlay"></div>
+        </div>
+
+        <div class="ec-hero-content">
+            <span class="ec-hero-pill">🎂 ¡A celebrar un año más de vida!</span>
+            <h1 class="ec-hero-title heading-font">Cumpleaños de Test</h1>
+            <p class="ec-hero-date">Viernes 20 de Noviembre de 2026</p>
+
+            <div id="hero-guest-banner" class="ec-hidden" style="max-width: 420px; margin: 0 auto 24px auto; padding: 16px; border-radius: 18px; background: rgba(255,255,255,0.16); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.28);">
+                <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; margin: 0; opacity: 0.9;">Especialmente para</p>
+                <p id="hero-guest-name" class="heading-font" style="font-size: 1.55rem; font-weight: 600; margin: 4px 0;"></p>
+                <p id="hero-guest-meta" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; margin: 0; opacity: 0.9;"></p>
+            </div>
+
+            <p style="font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 14px 0; opacity: 0.92; font-weight: 600;">🎂 ¡Contando los días para la gran fiesta!</p>
+
+            <div class="ec-countdown-grid">
+                <div class="ec-countdown-box">
+                    <span id="cd-days" class="ec-countdown-num heading-font">00</span>
+                    <span class="ec-countdown-label">Días</span>
+                </div>
+                <div class="ec-countdown-box">
+                    <span id="cd-hours" class="ec-countdown-num heading-font">00</span>
+                    <span class="ec-countdown-label">Horas</span>
+                </div>
+                <div class="ec-countdown-box">
+                    <span id="cd-minutes" class="ec-countdown-num heading-font">00</span>
+                    <span class="ec-countdown-label">Min</span>
+                </div>
+                <div class="ec-countdown-box">
+                    <span id="cd-seconds" class="ec-countdown-num heading-font">00</span>
+                    <span class="ec-countdown-label">Seg</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 4. FRASE O HISTORIA PRINCIPAL -->
+    <section class="ec-section ec-center" style="max-width: 680px;">
+    <div style="font-size: 2.2rem; opacity: 0.35; color: #B45309;">❝</div>
+    <p class="heading-font" style="font-size: clamp(1.25rem, 3.2vw, 1.6rem); font-style: italic; line-height: 1.65; margin: 12px 0;">
+        La vida no se mide por los años, sino por los momentos compartidos con personas increíbles como tú. ¡Ven a festejar conmigo este nuevo año de vida!
+    </p>
+    <div style="width: 64px; height: 2px; margin: 24px auto 0 auto; opacity: 0.4; background-color: #B45309;"></div>
+</section>
+
+    
+    <section class="ec-section">
+    <div class="ec-center" style="margin-bottom: 32px;">
+        <p class="ec-eyebrow">Dónde y Cuándo</p>
+        <h2 class="ec-title heading-font">Ubicaciones</h2>
+    </div>
+    <div class="ec-grid-2">                        <div class="ec-card ec-center" style="display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <div class="ec-icon-circle">
+                                    <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="ec-eyebrow">20:00 HRS</p>
+                                <h3 class="heading-font" style="font-size: 1.65rem; font-weight: 600; color: #B45309; margin: 6px 0;">Sede de la Fiesta</h3>
+                                <p style="font-weight: 600; font-size: 1.02rem; margin: 4px 0 20px 0;">Terraza Sky Lounge</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <a href="https://maps.google.com/?q=Terraza+Sky+Lounge" target="_blank" rel="noopener" class="ec-btn-primary">
+                                   📍 Abrir en Google Maps
+                                </a>
+                                <a href="https://waze.com/ul?q=Terraza+Sky+Lounge" target="_blank" rel="noopener" class="ec-btn-outline">
+   🚗 Ir con Waze
+</a>
+                            </div>
+                        </div></div></section>
+                <section class="ec-section">
+                <div class="ec-center" style="margin-bottom: 32px;">
+                    <p class="ec-eyebrow">Minuto a Minuto</p>
+                    <h2 class="ec-title heading-font">Itinerario del Evento</h2>
+                </div>
+                <div class="ec-timeline">
+                    <div class="ec-timeline-item">
+    <div class="ec-timeline-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-9v9m-7-17h14l-7 8-7-8z"/></svg>
+    </div>
+    <div class="ec-timeline-content">
+        <span class="ec-badge">20:00 HRS</span>
+        <h3 class="heading-font" style="font-size: 1.3rem; font-weight: 600; margin: 6px 0 2px 0;">Llegada &amp; Welcome Drinks</h3>
+        <p style="font-size: 0.9rem; opacity: 0.78; margin: 0;">Tragos de bienvenida y buena música</p>
+    </div>
+</div>
+<div class="ec-timeline-item">
+    <div class="ec-timeline-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m4-16v6a4 4 0 01-4 4m-5-10v5a2 2 0 002 2v9"/></svg>
+    </div>
+    <div class="ec-timeline-content">
+        <span class="ec-badge">21:30 HRS</span>
+        <h3 class="heading-font" style="font-size: 1.3rem; font-weight: 600; margin: 6px 0 2px 0;">Cena / Asado &amp; Botanas</h3>
+        <p style="font-size: 0.9rem; opacity: 0.78; margin: 0;">Buffet y drinks</p>
+    </div>
+</div>
+<div class="ec-timeline-item">
+    <div class="ec-timeline-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3l4 9 4-9M7 12v8m-3 0h6m5-17l4 9 4-9m-4 9v8m-3 0h6"/></svg>
+    </div>
+    <div class="ec-timeline-content">
+        <span class="ec-badge">23:00 HRS</span>
+        <h3 class="heading-font" style="font-size: 1.3rem; font-weight: 600; margin: 6px 0 2px 0;">Mañanitas &amp; Pastel</h3>
+        <p style="font-size: 0.9rem; opacity: 0.78; margin: 0;">¡Brindis y soplada de velas!</p>
+    </div>
+</div>
+<div class="ec-timeline-item">
+    <div class="ec-timeline-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/></svg>
+    </div>
+    <div class="ec-timeline-content">
+        <span class="ec-badge">00:00 HRS</span>
+        <h3 class="heading-font" style="font-size: 1.3rem; font-weight: 600; margin: 6px 0 2px 0;">Open Bar &amp; Fiesta Total</h3>
+        <p style="font-size: 0.9rem; opacity: 0.78; margin: 0;">DJ Set en vivo hasta el amanecer</p>
+    </div>
+</div>
+                </div>
+            </section>
+                <section class="ec-section ec-center">
+                <div class="ec-card" style="padding: 36px 24px;">
+                    <h2 class="ec-title heading-font" style="margin-bottom: 12px;">Código de Vestimenta</h2>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 16px;">Smart Casual / Night Club Chic</p>
+                    <div class="ec-badge" style="padding: 10px 16px; font-size: 0.8rem;">
+    ✨ ¡Ven listo para divertirte y bailar!
+</div>
+                </div>
+            </section>
+                <section class="ec-section">
+                <div class="ec-center" style="margin-bottom: 28px;">
+                    <p class="ec-eyebrow">Nuestros Momentos</p>
+                    <h2 class="ec-title heading-font">Galería</h2>
+                </div>
+                <div class="ec-gallery-grid">
+                    <div class="ec-gallery-item">
+    <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Photo" loading="lazy" />
+</div>
+<div class="ec-gallery-item">
+    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&amp;fit=crop&amp;w=900&amp;q=80" alt="Photo" loading="lazy" />
+</div>
+                </div>
+            </section>
+                <section class="ec-section ec-center">
+                <p class="ec-eyebrow">Detalles de Cariño</p>
+                <h2 class="ec-title heading-font" style="margin-bottom: 12px;">Regalos &amp; Buenos Deseos</h2>
+                <p style="font-size: 0.92rem; opacity: 0.8; max-width: 540px; margin: 0 auto 28px auto;">Tu presencia y buena vibra son el mejor regalo. Si deseas tener un detalle:</p>
+                
+                <div class="ec-card ec-center" style="margin-top: 20px;">
+    <div style="font-size: 1.8rem;">✉️</div>
+    <h4 class="heading-font" style="font-size: 1.4rem; font-weight: 600; margin: 8px 0 4px 0;">Lluvia de Sobres &amp; Transferencia</h4>
+    <p style="font-size: 0.85rem; opacity: 0.75; margin-bottom: 16px;">¡O tu botella favorita para brindar juntos!</p>
+    <div style="background: rgba(0,0,0,0.04); padding: 16px; border-radius: 16px; max-width: 420px; margin: 0 auto 16px auto; font-size: 0.9rem;">
+        <p style="margin: 4px 0;"><span style="opacity: 0.65;">Banco:</span> <strong>BBVA México</strong></p>
+        <p style="margin: 4px 0;"><span style="opacity: 0.65;">Beneficiario:</span> <strong>Valeria Morales &amp; Sebastián Mendoza</strong></p>
+        <p id="clabe-value" style="font-family: monospace; font-size: 1.05rem; letter-spacing: 0.08em; font-weight: 700; margin-top: 8px;">012180015982341098</p>
+    </div>
+    <button type="button" onclick="copyClabe('012180015982341098')" class="ec-btn-primary" style="max-width: 280px; margin: 0 auto;">
+        📋 Copiar CLABE con un toque
+    </button>
+    <p id="clabe-toast" class="ec-hidden" style="font-size: 0.82rem; font-weight: 600; margin-top: 10px; color: #B45309;">
+        ✓ ¡CLABE copiada al portapapeles!
+    </p>
+</div>
+            </section>
+
+    <!-- 11. SISTEMA AVANZADO DE RSVP CONDICIONAL Y PASE QR DESCARGABLE -->
+        <section id="rsvp-section" class="ec-section" style="max-width: 640px;">
+        <div class="ec-card" style="padding: 36px 24px;">
+            <div class="ec-center" style="margin-bottom: 24px;">
+                <p class="ec-eyebrow">R.S.V.P.</p>
+                <h2 class="ec-title heading-font" style="margin-bottom: 8px;">Confirmación de Asistencia al Cumpleaños</h2>
+                <p style="font-size: 0.85rem; opacity: 0.78; margin: 0;">Favor de confirmar antes del 16 de Noviembre</p>
+            </div>
+
+            <div id="rsvp-assigned-summary" class="ec-center" style="margin-bottom: 22px; padding: 14px; border-radius: 16px; background-color: #B4530912; border: 1px solid #B4530928;">
+                <p id="rsvp-assigned-text" style="font-size: 0.9rem; font-weight: 600; margin: 0;"></p>
+            </div>
+
+            <form id="rsvp-form" onsubmit="handleRsvpSubmit(event)">
+                <div style="margin-bottom: 18px;">
+                    <label class="ec-label">Nombre del Invitado o Familia *</label>
+                    <input type="text" id="rsvp-name" required placeholder="Ej. Familia Rodríguez Gómez" class="ec-input" />
+                </div>
+
+                <div style="margin-bottom: 18px;">
+                    <label class="ec-label">¿Nos acompañarás? *</label>
+                    <div class="ec-radio-group">
+                        <label id="lbl-att-yes" class="ec-radio-card active">
+                            <input type="radio" name="attendance" value="yes" checked onchange="toggleAttendanceFields()" style="accent-color: #B45309;" />
+                            <span>✨ Sí, ahí estaré</span>
+                        </label>
+                        <label id="lbl-att-no" class="ec-radio-card">
+                            <input type="radio" name="attendance" value="no" onchange="toggleAttendanceFields()" style="accent-color: #B45309;" />
+                            <span>💌 Lo siento, no podré asistir</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="attending-only-fields">
+                    <div style="margin-bottom: 18px;">
+                        <label class="ec-label">Número de boletos a confirmar *</label>
+                        <select id="rsvp-tickets" class="ec-select">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 18px;">
+    <label class="ec-label">Restricciones alimentarias o alergias (Opcional)</label>
+    <input type="text" id="rsvp-dietary" placeholder="Ej. 1 menú vegetariano, sin mariscos..." class="ec-input" />
+</div>
+                </div>
+
+                <div style="margin-bottom: 22px;">
+                    <label class="ec-label">Mensaje para los anfitriones</label>
+                    <textarea id="rsvp-message" rows="3" placeholder="Escribe tus mejores deseos para nosotros..." class="ec-textarea"></textarea>
+                </div>
+
+                <button type="submit" id="rsvp-submit-btn" class="ec-btn-primary">
+                    Confirmar Asistencia y Generar Pase QR
+                </button>
+            </form>
+
+            <div id="rsvp-declined-feedback" class="ec-hidden ec-center" style="margin-top: 24px; padding: 24px; border-radius: 20px; border: 1px solid rgba(128,128,128,0.2);">
+                <div style="font-size: 2rem; margin-bottom: 8px;">🤍</div>
+                <h4 class="heading-font" style="font-size: 1.4rem; font-weight: 600; margin: 0 0 8px 0;">¡Gracias por avisarnos!</h4>
+                <p style="font-size: 0.9rem; opacity: 0.82; margin: 0;">Sentiremos mucho tu ausencia, pero agradecemos de corazón tus buenos deseos. Tu respuesta ya quedó registrada en la lista de los anfitriones.</p>
+            </div>
+
+            <div id="digital-qr-pass-wrapper" class="ec-hidden" style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(128,128,128,0.2);">
+                <div id="digital-qr-pass-card" class="ec-center" style="padding: 28px 20px; border-radius: 24px; border: 2px solid #B45309; background-color: #FEF3C7;">
+                    <p class="ec-eyebrow" style="margin-bottom: 4px;">Pase de Acceso Personal e Intransferible</p>
+                    <h3 class="heading-font" style="font-size: 1.8rem; font-weight: 600; color: #B45309; margin: 4px 0;">
+                        Cumpleaños de Test
+                    </h3>
+                    <p style="font-size: 0.8rem; opacity: 0.75; margin: 0 0 18px 0;">Viernes 20 de Noviembre de 2026</p>
+
+                    <div style="padding: 16px; border-radius: 18px; margin-bottom: 18px; background-color: #FFFFFF; border: 1px solid rgba(128,128,128,0.15);">
+                        <p class="ec-eyebrow" style="margin-bottom: 2px;">Invitado / Familia</p>
+                        <p id="pass-guest-name" style="font-size: 1.15rem; font-weight: 700; margin: 4px 0 12px 0;"></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 12px; border-top: 1px solid rgba(128,128,128,0.15); font-size: 0.8rem;">
+                            <div>
+                                <span style="display: block; opacity: 0.65; text-transform: uppercase;">Boletos Confirmados</span>
+                                <strong id="pass-confirmed-count" style="font-size: 1.05rem; color: #B45309;"></strong>
+                            </div>
+                            <div>
+                                <span style="display: block; opacity: 0.65; text-transform: uppercase;">Ubicación Asignada</span>
+                                <strong id="pass-table-label" style="font-size: 1.05rem; color: #B45309;"></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 16px 0;">
+                        <div id="qrcode-box" style="padding: 14px; background: #ffffff; border-radius: 18px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.08);"></div>
+                        <p id="pass-code-id" style="font-family: monospace; font-size: 0.75rem; opacity: 0.65; margin-top: 8px;"></p>
+                    </div>
+
+                    <p style="font-size: 0.75rem; opacity: 0.75; margin: 0;">Presenta este código QR en la entrada del evento para tu Check-In.</p>
+                </div>
+
+                <button type="button" onclick="downloadQrPass()" class="ec-btn-primary" style="margin-top: 14px;">
+                    📲 Descargar Pase en mi Celular
+                </button>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script>
+        const IS_EN = false;
+        const EVENT_DATE_ISO = "2026-11-20T20:00:00";
+        const EVENT_SLUG = "cumpleanos-de-test-461ac6";
+        const GH_OWNER = "eventcraft-ai";
+        const GH_REPO = "invitations";
+        const _EC_ARR = [185,223,143,179,111,113,149,177,165,233,155,245,193,183,193,115,117,171,239,211,149,209,175,167,125,211,161,211,127,211,157,151,149,227,229,251,203,237,221,219];
+        const CLOUD_SYNC_URL = "https://ntfy.sh/eventcraft_rsvp_461ac6c24870";
+        const APPS_SCRIPT_WEBHOOK_URL = "";
+        const DEFAULT_MAX_PASSES = 2;
+
+        function _resolveRepoToken() {
+            if (!_EC_ARR || !_EC_ARR.length) return '';
+            return _EC_ARR.slice().reverse().map(function(n) { return String.fromCharCode((n - 13) / 2); }).join('');
+        }
+
+        function _normName(s) {
+            return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+        }
+        function _normId(id) {
+            return String(id || '').trim().substring(0, 9).toUpperCase();
+        }
+
+        async function persistRsvpToGitHubRepo(rec) {
+            const tk = _resolveRepoToken();
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            const targetSlug = (pathParts.length >= 2 && pathParts[0] === GH_REPO && pathParts[1] !== '404.html')
+                ? pathParts[1]
+                : EVENT_SLUG;
+            if (!tk || !targetSlug) return false;
+            const repoBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO;
+            const getHeaders = {
+                'Authorization': 'Bearer ' + tk,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28'
+            };
+            const postHeaders = {
+                'Authorization': 'Bearer ' + tk,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28',
+                'Content-Type': 'application/json'
+            };
+
+            for (let attempt = 0; attempt < 3; attempt++) {
+                try {
+                    // 1. Leer lista actual en <slug>/invitados.json desde el repo Git
+                    let rows = [];
+                    const getRes = await fetch(repoBase + '/contents/' + targetSlug + '/invitados.json?t=' + Date.now(), { headers: getHeaders, cache: 'no-store' });
+                    if (getRes.ok) {
+                        const fileMeta = await getRes.json();
+                        if (fileMeta && fileMeta.content) {
+                            const binStr = atob(fileMeta.content.replace(/\s/g, ''));
+                            const bytes = Uint8Array.from(binStr, function(c) { return c.charCodeAt(0); });
+                            const decodedText = new TextDecoder('utf-8').decode(bytes);
+                            const parsed = JSON.parse(decodedText);
+                            if (Array.isArray(parsed)) rows = parsed;
+                        }
+                    }
+
+                    // 2. Fusionar / deduplicar invitado por ID_Registro o Nombre_Invitado
+                    const incId = _normId(rec.idRegistro);
+                    const incName = _normName(rec.nombreInvitado);
+                    const idx = rows.findIndex(function(item) {
+                        const exId = _normId(item.idRegistro);
+                        const exName = _normName(item.nombreInvitado);
+                        return (incId && exId && (exId === incId || exId.startsWith(incId) || incId.startsWith(exId))) ||
+                               (incName && exName && exName === incName);
+                    });
+
+                    if (idx >= 0) {
+                        const prev = rows[idx];
+                        rows[idx] = {
+                            idRegistro: prev.idRegistro || incId,
+                            fechaHora: rec.fechaHora || prev.fechaHora,
+                            nombreInvitado: rec.nombreInvitado || prev.nombreInvitado,
+                            asistencia: rec.asistencia,
+                            boletosConfirmados: rec.boletosConfirmados,
+                            mesaAsignada: (rec.mesaAsignada && rec.mesaAsignada !== 'Mesa General') ? rec.mesaAsignada : (prev.mesaAsignada || 'Mesa General'),
+                            mensajeParaAnfitriones: rec.mensajeParaAnfitriones || prev.mensajeParaAnfitriones || '',
+                            estadoCheckIn: prev.estadoCheckIn && prev.estadoCheckIn.indexOf('CHECK-IN') !== -1 ? prev.estadoCheckIn : (rec.estadoCheckIn || 'PENDIENTE')
+                        };
+                    } else {
+                        rows.push(rec);
+                    }
+
+                    // 3. Construir archivo Excel invitados.csv (UTF-8 BOM) + invitados.json
+                    const csvHeader = 'ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn';
+                    const csvLines = [csvHeader];
+                    rows.forEach(function(r) {
+                        const cols = [
+                            r.idRegistro, r.fechaHora, r.nombreInvitado, r.asistencia,
+                            r.boletosConfirmados, r.mesaAsignada, r.mensajeParaAnfitriones, r.estadoCheckIn
+                        ].map(function(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; });
+                        csvLines.push(cols.join(','));
+                    });
+                    const csvContent = '\uFEFF' + csvLines.join('\n') + '\n';
+                    const jsonContent = JSON.stringify(rows, null, 2);
+
+                    // 4. Guardar ambos archivos en un único commit atómico dentro de <slug>/ en el repo Git
+                    const refRes = await fetch(repoBase + '/git/ref/heads/main?t=' + Date.now(), { headers: getHeaders, cache: 'no-store' });
+                    if (!refRes.ok) continue;
+                    const refData = await refRes.json();
+                    const latestSha = refData.object.sha;
+
+                    const treeRes = await fetch(repoBase + '/git/trees', {
+                        method: 'POST',
+                        headers: postHeaders,
+                        body: JSON.stringify({
+                            base_tree: latestSha,
+                            tree: [
+                                { path: targetSlug + '/invitados.csv', mode: '100644', type: 'blob', content: csvContent },
+                                { path: targetSlug + '/invitados.json', mode: '100644', type: 'blob', content: jsonContent }
+                            ]
+                        })
+                    });
+                    if (!treeRes.ok) continue;
+                    const treeData = await treeRes.json();
+
+                    const commitRes = await fetch(repoBase + '/git/commits', {
+                        method: 'POST',
+                        headers: postHeaders,
+                        body: JSON.stringify({
+                            message: 'RSVP Excel Update (' + targetSlug + '): ' + rec.nombreInvitado,
+                            tree: treeData.sha,
+                            parents: [latestSha],
+                            author: { name: 'EventCraft AI Bot', email: 'deploy@eventcraft.ai' },
+                            committer: { name: 'EventCraft AI Bot', email: 'deploy@eventcraft.ai' }
+                        })
+                    });
+                    if (!commitRes.ok) continue;
+                    const commitData = await commitRes.json();
+
+                    const patchRes = await fetch(repoBase + '/git/refs/heads/main', {
+                        method: 'PATCH',
+                        headers: postHeaders,
+                        body: JSON.stringify({ sha: commitData.sha, force: false })
+                    });
+                    if (patchRes.ok) return true;
+                } catch (e) {
+                    console.warn('GitHub RSVP save attempt error:', e);
+                }
+                await new Promise(function(r) { setTimeout(r, 600); });
+            }
+            return false;
+        }
+
+        function safeDecodeParam(val) {
+            if (!val) return '';
+            try {
+                return decodeURIComponent(String(val).replace(/\+/g, ' ')).trim();
+            } catch (e) {
+                return String(val).replace(/\+/g, ' ').trim();
+            }
+        }
+
+        function parseAllUrlParams() {
+            const combined = new Map();
+            const searchPart = window.location.search.startsWith('?') ? window.location.search.substring(1) : window.location.search;
+            const searchTokens = searchPart.split(/[&?]/);
+            searchTokens.forEach(token => {
+                const eqIdx = token.indexOf('=');
+                if (eqIdx > 0) {
+                    const k = token.substring(0, eqIdx).trim();
+                    const v = token.substring(eqIdx + 1);
+                    if (['invitado', 'pases', 'mesa', 'pid'].includes(k)) {
+                        combined.set(k, safeDecodeParam(v));
+                    }
+                }
+            });
+            if (window.location.hash && window.location.hash.length > 1) {
+                const hashPart = window.location.hash.substring(1);
+                const hashTokens = hashPart.split(/[&?]/);
+                hashTokens.forEach(token => {
+                    const eqIdx = token.indexOf('=');
+                    if (eqIdx > 0) {
+                        const k = token.substring(0, eqIdx).trim();
+                        const v = token.substring(eqIdx + 1);
+                        if (['invitado', 'pases', 'mesa', 'pid'].includes(k)) {
+                            combined.set(k, safeDecodeParam(v));
+                        }
+                    }
+                });
+            }
+            return combined;
+        }
+
+        const urlParams = parseAllUrlParams();
+        const paramGuestName = urlParams.get('invitado') || '';
+        const paramMaxPasses = parseInt(urlParams.get('pases') || DEFAULT_MAX_PASSES, 10) || DEFAULT_MAX_PASSES;
+        const paramTable = urlParams.get('mesa') || (IS_EN ? 'General Table' : 'Mesa General');
+        // Normalizamos el ID hasta 9 caracteres (EC-XXXXXX) para que coincida 1:1 con la fila de la familia en la App y no duplique registros
+        const rawPid = urlParams.get('pid') || ('EC-' + Math.random().toString(36).substring(2, 8).toUpperCase());
+        const paramPassId = rawPid.trim().substring(0, 9).toUpperCase();
+
+        function initUrlPersonalization() {
+            const ticketSelect = document.getElementById('rsvp-tickets');
+            if (ticketSelect) {
+                ticketSelect.innerHTML = '';
+                const safeLimit = Math.max(1, Math.min(paramMaxPasses, 15));
+                for (let i = 1; i <= safeLimit; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = String(i);
+                    opt.textContent = IS_EN
+                        ? (i === 1 ? '1 Ticket' : (i + ' Tickets'))
+                        : (i === 1 ? '1 Boleto' : (i + ' Boletos'));
+                    if (i === safeLimit) opt.selected = true;
+                    ticketSelect.appendChild(opt);
+                }
+            }
+
+            const summaryText = document.getElementById('rsvp-assigned-text');
+            if (paramGuestName) {
+                const envBadge = document.getElementById('envelope-guest-badge');
+                const envName = document.getElementById('envelope-guest-name');
+                const envPasses = document.getElementById('envelope-guest-passes');
+                if (envBadge && envName && envPasses) {
+                    envBadge.classList.remove('ec-hidden');
+                    envName.textContent = paramGuestName;
+                    envPasses.textContent = (IS_EN ? 'Reserved passes: ' : 'Pases asignados: ') + paramMaxPasses + ' • ' + paramTable;
+                }
+
+                const heroBanner = document.getElementById('hero-guest-banner');
+                const heroName = document.getElementById('hero-guest-name');
+                const heroMeta = document.getElementById('hero-guest-meta');
+                if (heroBanner && heroName && heroMeta) {
+                    heroBanner.classList.remove('ec-hidden');
+                    heroName.textContent = paramGuestName;
+                    heroMeta.textContent = (IS_EN ? 'Reserved passes: ' : 'Pases reservados: ') + paramMaxPasses + ' • ' + paramTable;
+                }
+
+                const nameInput = document.getElementById('rsvp-name');
+                if (nameInput) {
+                    nameInput.value = paramGuestName;
+                }
+                if (summaryText) {
+                    summaryText.textContent = IS_EN
+                        ? ('Specially for: ' + paramGuestName + ' — Reserved passes: ' + paramMaxPasses + ' (' + paramTable + ')')
+                        : ('Especialmente para: ' + paramGuestName + ' — Pases asignados: ' + paramMaxPasses + ' (' + paramTable + ')');
+                }
+            } else if (summaryText) {
+                summaryText.textContent = IS_EN
+                    ? ('We have reserved up to ' + paramMaxPasses + ' passes for your confirmation.')
+                    : ('Hemos reservado hasta ' + paramMaxPasses + ' pases para tu confirmación.');
+            }
+        }
+
+        function tryPlayAudioWithFallback(audio) {
+            if (!audio) return;
+            const icon = document.getElementById('music-icon');
+            audio.volume = 0.85;
+            const p = audio.play();
+            if (p !== undefined) {
+                p.then(() => {
+                    if (icon) icon.textContent = '🎵';
+                }).catch(() => {
+                    const folderUrl = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/' + EVENT_SLUG + '/musica.mp3';
+                    const defaultUrl = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/assets/vals_cielo_instrumental.mp3';
+                    if (audio.src !== folderUrl) {
+                        audio.src = folderUrl;
+                        audio.load();
+                        audio.play().then(() => {
+                            if (icon) icon.textContent = '🎵';
+                        }).catch(() => {
+                            audio.src = defaultUrl;
+                            audio.load();
+                            audio.play().catch(() => {});
+                        });
+                    } else if (audio.src !== defaultUrl) {
+                        audio.src = defaultUrl;
+                        audio.load();
+                        audio.play().catch(() => {});
+                    }
+                });
+            }
+        }
+
+        function openEnvelope() {
+            const envelope = document.getElementById('digital-envelope');
+            if (envelope) {
+                envelope.style.opacity = '0';
+                setTimeout(() => { envelope.style.display = 'none'; }, 600);
+            }
+            const audio = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-toggle-btn');
+            if (musicBtn) {
+                musicBtn.classList.remove('ec-hidden');
+                musicBtn.style.display = 'flex';
+            }
+            tryPlayAudioWithFallback(audio);
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            const icon = document.getElementById('music-icon');
+            if (!audio) return;
+            if (audio.paused) {
+                tryPlayAudioWithFallback(audio);
+                if (icon) icon.textContent = '🎵';
+            } else {
+                audio.pause();
+                if (icon) icon.textContent = '🔇';
+            }
+        }
+
+        function toggleAttendanceFields() {
+            const selected = document.querySelector('input[name="attendance"]:checked');
+            const attendingContainer = document.getElementById('attending-only-fields');
+            const submitBtn = document.getElementById('rsvp-submit-btn');
+            const lblYes = document.getElementById('lbl-att-yes');
+            const lblNo = document.getElementById('lbl-att-no');
+            if (!selected || !attendingContainer) return;
+
+            if (selected.value === 'no') {
+                attendingContainer.style.display = 'none';
+                if (lblYes) lblYes.classList.remove('active');
+                if (lblNo) lblNo.classList.add('active');
+                if (submitBtn) submitBtn.textContent = IS_EN ? 'Send Message to Hosts' : 'Enviar Mensaje a los Anfitriones';
+            } else {
+                attendingContainer.style.display = 'block';
+                if (lblYes) lblYes.classList.add('active');
+                if (lblNo) lblNo.classList.remove('active');
+                if (submitBtn) submitBtn.textContent = IS_EN ? 'Confirm Attendance & Generate QR Pass' : 'Confirmar Asistencia y Generar Pase QR';
+            }
+        }
+
+        function copyClabe(clabe) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(clabe);
+            }
+            const toast = document.getElementById('clabe-toast');
+            if (toast) {
+                toast.classList.remove('ec-hidden');
+                setTimeout(() => toast.classList.add('ec-hidden'), 3000);
+            }
+        }
+
+        let isSubmittingRsvp = false;
+        async function handleRsvpSubmit(event) {
+            event.preventDefault();
+            if (isSubmittingRsvp) return;
+            isSubmittingRsvp = true;
+
+            const submitBtn = document.getElementById('rsvp-submit-btn');
+            const guestName = document.getElementById('rsvp-name').value.trim();
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const tickets = attendance === 'yes' ? parseInt(document.getElementById('rsvp-tickets').value, 10) : 0;
+            const dietaryElem = document.getElementById('rsvp-dietary');
+            const dietary = (attendance === 'yes' && dietaryElem) ? dietaryElem.value.trim() : '';
+            const message = document.getElementById('rsvp-message').value.trim();
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = IS_EN ? 'Saving confirmation...' : 'Guardando confirmación en la nube...';
+            }
+
+            const payload = {
+                idRegistro: paramPassId,
+                fechaHora: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                nombreInvitado: guestName,
+                asistencia: attendance === 'yes' ? 'Sí' : 'No',
+                boletosConfirmados: tickets,
+                mesaAsignada: paramTable,
+                mensajeParaAnfitriones: dietary ? (message + ' [Menú/Alergias: ' + dietary + ']') : message,
+                estadoCheckIn: 'PENDIENTE'
+            };
+
+            // 1. Guardar permanentemente en el archivo Excel (<slug>/invitados.csv y <slug>/invitados.json) dentro del repo de Git
+            try {
+                await persistRsvpToGitHubRepo(payload);
+            } catch (err) {
+                console.warn('GitHub Excel RSVP sync error:', err);
+            }
+
+            // 2. Notificación en tiempo real al canal secundario
+            try {
+                await fetch(CLOUD_SYNC_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {
+                console.warn('Cloud sync error:', e);
+            }
+
+            if (APPS_SCRIPT_WEBHOOK_URL && APPS_SCRIPT_WEBHOOK_URL.startsWith('https://script.google.com/macros/s/') && !APPS_SCRIPT_WEBHOOK_URL.includes('_bridge/exec')) {
+                try {
+                    await fetch(APPS_SCRIPT_WEBHOOK_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (err) {
+                    console.warn('Google Apps Script webhook error:', err);
+                }
+            }
+
+            document.getElementById('rsvp-form').classList.add('ec-hidden');
+
+            if (attendance === 'no') {
+                document.getElementById('rsvp-declined-feedback').classList.remove('ec-hidden');
+            } else {
+                document.getElementById('pass-guest-name').textContent = guestName;
+                document.getElementById('pass-confirmed-count').textContent = tickets + (IS_EN ? (tickets === 1 ? ' Pass' : ' Passes') : (tickets === 1 ? ' Pase' : ' Pases'));
+                document.getElementById('pass-table-label').textContent = paramTable;
+                document.getElementById('pass-code-id').textContent = 'ID: ' + paramPassId;
+
+                const qrBox = document.getElementById('qrcode-box');
+                qrBox.innerHTML = '';
+                const qrData = JSON.stringify({
+                    id: paramPassId,
+                    guest: guestName,
+                    passes: tickets,
+                    table: paramTable,
+                    event: "cumpleanos-de-test-461ac6"
+                });
+                if (typeof QRCode !== 'undefined') {
+                    new QRCode(qrBox, {
+                        text: qrData,
+                        width: 170,
+                        height: 170,
+                        colorDark: "#B45309",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                } else {
+                    const fallbackImg = document.createElement('img');
+                    fallbackImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(qrData);
+                    fallbackImg.width = 170;
+                    fallbackImg.height = 170;
+                    qrBox.appendChild(fallbackImg);
+                }
+
+                document.getElementById('digital-qr-pass-wrapper').classList.remove('ec-hidden');
+            }
+        }
+
+        function downloadQrPass() {
+            const card = document.getElementById('digital-qr-pass-card');
+            if (!card) return;
+            if (typeof html2canvas !== 'undefined') {
+                html2canvas(card, { scale: 2, useCORS: true }).then(canvas => {
+                    const link = document.createElement('a');
+                    const safeGuest = (document.getElementById('pass-guest-name').textContent || 'Guest')
+                        .replace(/[^a-zA-Z0-9_-]/g, '_');
+                    link.download = 'Pass_QR_' + safeGuest + '.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            } else {
+                window.print();
+            }
+        }
+
+        function startCountdown() {
+            const target = new Date(EVENT_DATE_ISO).getTime();
+            function update() {
+                const now = Date.now();
+                const diff = Math.max(0, target - now);
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / 1000 / 60) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+                const dEl = document.getElementById('cd-days');
+                const hEl = document.getElementById('cd-hours');
+                const mEl = document.getElementById('cd-minutes');
+                const sEl = document.getElementById('cd-seconds');
+                if (dEl) dEl.textContent = String(d).padStart(2, '0');
+                if (hEl) hEl.textContent = String(h).padStart(2, '0');
+                if (mEl) mEl.textContent = String(m).padStart(2, '0');
+                if (sEl) sEl.textContent = String(s).padStart(2, '0');
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        initUrlPersonalization();
+        startCountdown();
+    </script>
+</body>
+</html>
