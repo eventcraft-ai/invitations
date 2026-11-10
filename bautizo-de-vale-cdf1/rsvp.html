@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hoja RSVP en Vivo - Valeria & Sebastián</title>
+    <title>Hoja RSVP en Vivo - Mis XV Valentina</title>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; }
@@ -27,7 +27,7 @@
     <header>
         <div>
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.85;">EventCraft AI • Cloud Sheets Sync</div>
-            <h1 style="margin: 4px 0 0 0; font-size: 18px;">📊 Confirmaciones RSVP: Valeria & Sebastián</h1>
+            <h1 style="margin: 4px 0 0 0; font-size: 18px;">📊 Confirmaciones RSVP: Mis XV Valentina</h1>
         </div>
         <div style="display: flex; gap: 8px;">
             <button onclick="fetchCloudRsvps()" class="btn btn-ghost">🔄 Actualizar en Vivo</button>
@@ -72,7 +72,7 @@
 
     <script>
         const TOPIC = "eventcraft_rsvp_cdf19657d110";
-        const initialRows = [];
+        const initialRows = [{"idRegistro":"EC-BC83D","fechaHora":"2026-11-10 09:44","nombreInvitado":"Jesús test inv","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa 1","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"}];
         const rowsList = [];
 
         function normStr(s) {
