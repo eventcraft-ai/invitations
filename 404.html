@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abriendo invitación... | EventCraft AI</title>
+<style>
+  body { margin:0; background:#0F0C18; color:#F8E3A1; font-family:system-ui,-apple-system,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; }
+  .spinner { width:44px; height:44px; border:3px solid rgba(248,227,161,0.2); border-top-color:#F8E3A1; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:18px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+<script>
+(async function() {
+  try {
+    var path = window.location.pathname.replace(/^\/invitations\/?/, '').replace(/\/+$/, '').replace(/\/index\.html$/, '');
+    if (!path) return;
+    var rawUrl = 'https://raw.githubusercontent.com/eventcraft-ai/invitations/main/' + path + '/index.html?t=' + Date.now();
+    var res = await fetch(rawUrl, { cache: 'no-store' });
+    if (res.ok) {
+      var html = await res.text();
+      document.open();
+      document.write(html);
+      document.close();
+      return;
+    }
+  } catch (e) {}
+  setTimeout(function() { window.location.reload(); }, 3000);
+})();
+</script>
+</head>
+<body>
+  <div class="spinner"></div>
+  <div style="font-size:18px;font-weight:600;">Cargando tu invitación interactiva...</div>
+</body>
+</html>
