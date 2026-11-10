@@ -15,9 +15,10 @@
 <script>
 (async function() {
   try {
-    var path = window.location.pathname.replace(/^\/invitations\/?/, '').replace(/\/+$/, '').replace(/\/index\.html$/, '');
+    var path = window.location.pathname.replace(/^\/invitations\/?/, '').replace(/\/+$/, '');
     if (!path) return;
-    var rawUrl = 'https://raw.githubusercontent.com/eventcraft-ai/invitations/main/' + path + '/index.html?t=' + Date.now();
+    var targetFile = path.endsWith('.html') ? path : (path + '/index.html');
+    var rawUrl = 'https://raw.githubusercontent.com/eventcraft-ai/invitations/main/' + targetFile + '?t=' + Date.now();
     for (var attempt = 0; attempt < 6; attempt++) {
       var res = await fetch(rawUrl, { cache: 'no-store' });
       if (res.ok) {
