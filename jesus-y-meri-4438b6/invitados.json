@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "idRegistro": "EC-9EJXA",
+    "fechaHora": "2026-11-10 03:56",
+    "nombreInvitado": "Jesús test",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa General",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  }
+]
