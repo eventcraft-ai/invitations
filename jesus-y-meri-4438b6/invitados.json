@@ -8,5 +8,15 @@
     "mesaAsignada": "Mesa General",
     "mensajeParaAnfitriones": "",
     "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-SNF3N",
+    "fechaHora": "2026-11-10 03:57",
+    "nombreInvitado": "Familia Almanza",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa General",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
   }
 ]
