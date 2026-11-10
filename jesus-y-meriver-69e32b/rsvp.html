@@ -22,6 +22,176 @@
         .yes { color: #047857; font-weight: 700; }
         .no { color: #be123c; font-weight: 700; }
     </style>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+        // ==========================================
+        // ESCÁNER QR WEB PARA CUALQUIER TELÉFONO
+        // ==========================================
+        let html5QrCode = null;
+        let isProcessingScan = false;
+
+        function openScannerModal() {
+            document.getElementById('scanner-modal').classList.add('active');
+            const feedback = document.getElementById('scan-feedback');
+            feedback.className = 'scan-result-card';
+            feedback.style.display = 'none';
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+
+            const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onQrCodeScanned,
+                (errorMessage) => { /* scanning errors ignored */ }
+            ).catch(err => {
+                feedback.className = 'scan-result-card danger';
+                feedback.innerHTML = '<strong>⚠️ Error de Cámara:</strong> Permite el acceso a la cámara en tu navegador para escanear pases.';
+            });
+        }
+
+        function closeScannerModal() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                }).catch(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                });
+            } else {
+                document.getElementById('scanner-modal').classList.remove('active');
+            }
+        }
+
+        async function onQrCodeScanned(decodedText) {
+            if (isProcessingScan) return;
+            isProcessingScan = true;
+
+            try {
+                let passData = null;
+                try {
+                    passData = JSON.parse(decodedText);
+                } catch (e) {
+                    // Try parsing URL query parameters if a link was encoded
+                    if (decodedText.includes('invitado=') || decodedText.includes('pid=')) {
+                        const urlObj = new URL(decodedText);
+                        passData = {
+                            id: urlObj.searchParams.get('pid') || urlObj.searchParams.get('id') || '',
+                            guest: urlObj.searchParams.get('invitado') || '',
+                            passes: Number(urlObj.searchParams.get('pases') || 1),
+                            table: urlObj.searchParams.get('mesa') || 'Mesa General'
+                        };
+                    }
+                }
+
+                const scannedId = normId(passData ? passData.id : decodedText);
+                const scannedName = normStr(passData ? (passData.guest || passData.name) : '');
+
+                // Buscar en la lista local de filas de Excel
+                const matchedIndex = rowsList.findIndex(r => {
+                    const rId = normId(r.idRegistro);
+                    const rName = normStr(r.nombreInvitado);
+                    return (scannedId && rId && (rId === scannedId || rId.startsWith(scannedId) || scannedId.startsWith(rId))) ||
+                           (scannedName && rName && rName === scannedName);
+                });
+
+                const feedback = document.getElementById('scan-feedback');
+                const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                if (matchedIndex === -1) {
+                    // ❌ NO ENCONTRADO EN LA LISTA
+                    feedback.className = 'scan-result-card danger';
+                    feedback.innerHTML = `
+                        <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">❌ PASE NO AUTORIZADO</div>
+                        <div>El código <code>${'$'}{scannedId || decodedText.substring(0, 15)}</code> no pertenece a la lista de invitados de este evento.</div>
+                    `;
+                    playBeep(false);
+                } else {
+                    const guestRec = rowsList[matchedIndex];
+                    const alreadyCheckedIn = String(guestRec.estadoCheckIn).toUpperCase().includes('CHECK-IN OK');
+
+                    if (alreadyCheckedIn) {
+                        // ⚠️ YA HABÍA INGRESADO
+                        feedback.className = 'scan-result-card warning';
+                        feedback.innerHTML = `
+                            <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ PASE YA UTILIZADO PREVIAMENTE</div>
+                            <div><strong>Invitado:</strong> ${'$'}{guestRec.nombreInvitado}</div>
+                            <div><strong>Boletos:</strong> ${'$'}{guestRec.boletosConfirmados} pases | <strong>Mesa:</strong> ${'$'}{guestRec.mesaAsignada}</div>
+                            <div style="margin-top: 6px; font-size: 11px;">Estado actual: <strong>${'$'}{guestRec.estadoCheckIn}</strong></div>
+                        `;
+                        playBeep(false);
+                    } else {
+                        // 🟢 INGRESO VÁLIDO Y EXITOSO
+                        const checkInStatus = 'CHECK-IN OK (' + nowStr + ')';
+                        guestRec.estadoCheckIn = checkInStatus;
+                        guestRec.asistencia = 'Sí';
+
+                        feedback.className = 'scan-result-card success';
+                        feedback.innerHTML = `
+                            <div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">🟢 ¡ACCESO CONCEDIDO!</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #047857;">${'$'}{guestRec.nombreInvitado}</div>
+                            <div style="margin-top: 4px;">
+                                🎟️ <strong>${'$'}{guestRec.boletosConfirmados} Pases Autorizados</strong> &bull; 🪑 <strong>${'$'}{guestRec.mesaAsignada}</strong>
+                            </div>
+                            <div style="margin-top: 8px;"><span class="badge-verified">Ingreso Registrado: ${'$'}{nowStr}</span></div>
+                        `;
+                        playBeep(true);
+                        renderTable();
+
+                        // Notificar en tiempo real al canal cloud de ntfy y a la app del anfitrión
+                        runCatchingNtfyUpdate(guestRec);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setTimeout(() => { isProcessingScan = false; }, 2500);
+            }
+        }
+
+        async function runCatchingNtfyUpdate(record) {
+            try {
+                const payload = JSON.stringify(record);
+                await fetch('https://ntfy.sh/' + TOPIC, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+            } catch (e) {
+                console.warn('Could not post check-in to ntfy:', e);
+            }
+        }
+
+        function playBeep(success) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = success ? 'sine' : 'sawtooth';
+                osc.frequency.value = success ? 880 : 220;
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.start();
+                osc.stop(ctx.currentTime + (success ? 0.18 : 0.4));
+            } catch (e) {}
+        }
+
+</script>
+    <style>
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-card { background: #fff; width: 100%; max-width: 480px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; max-height: 90vh; overflow-y: auto; }
+        #qr-reader { width: 100%; border-radius: 12px; overflow: hidden; margin: 12px 0; border: 2px dashed #cbd5e1; }
+        .scan-result-card { margin-top: 14px; padding: 14px; border-radius: 14px; text-align: left; font-size: 13px; display: none; }
+        .scan-result-card.success { background: #ecfdf5; border: 1px solid #10b981; color: #065f46; display: block; }
+        .scan-result-card.warning { background: #fffbeb; border: 1px solid #f59e0b; color: #92400e; display: block; }
+        .scan-result-card.danger { background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; display: block; }
+        .badge-verified { background: #10b981; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; text-transform: uppercase; }
+        .btn-scan { background: #d97706; color: #fff; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-scan:hover { background: #b45309; }
+    </style>
+
 </head>
 <body>
     <header>
@@ -31,7 +201,7 @@
         </div>
         <div style="display: flex; gap: 8px;">
             <button onclick="fetchCloudRsvps()" class="btn btn-ghost">🔄 Actualizar en Vivo</button>
-            <button onclick="downloadCsv()" class="btn btn-light">⬇️ Descargar Excel (.CSV)</button>
+            <button onclick="openScannerModal()" class="btn btn-scan">📷 Escáner QR de Recepción</button>`n            <button onclick="downloadCsv()" class="btn btn-light">⬇️ Descargar Excel (.CSV)</button>
         </div>
     </header>
 
@@ -68,7 +238,30 @@
                 <tbody id="sheet-body"></tbody>
             </table>
         </div>
-    </main>
+        <!-- MODAL ESCÁNER QR PARA CADENEROS / HOSTESS -->
+    <div id="scanner-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="margin: 0; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+                    📷 Escáner QR de Recepción
+                </h3>
+                <button onclick="closeScannerModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin: 0 0 10px 0;">
+                Apunta la cámara al código QR del pase del invitado (físico o en pantalla).
+            </p>
+
+            <div id="qr-reader"></div>
+
+            <div id="scan-feedback" class="scan-result-card"></div>
+
+            <div style="margin-top: 14px; display: flex; gap: 8px; justify-content: center;">
+                <button onclick="closeScannerModal()" class="btn btn-ghost" style="background: #e2e8f0; color: #0f172a;">Cerrar Escáner</button>
+            </div>
+        </div>
+    </div>
+
+</main>
 
     <script>
         const TOPIC = "eventcraft_rsvp_69e32b134c56";
@@ -204,6 +397,161 @@
         renderTable();
         fetchCloudRsvps();
         setInterval(fetchCloudRsvps, 6000);
-    </script>
+    
+        // ==========================================
+        // ESCÁNER QR WEB PARA CUALQUIER TELÉFONO
+        // ==========================================
+        let html5QrCode = null;
+        let isProcessingScan = false;
+
+        function openScannerModal() {
+            document.getElementById('scanner-modal').classList.add('active');
+            const feedback = document.getElementById('scan-feedback');
+            feedback.className = 'scan-result-card';
+            feedback.style.display = 'none';
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+
+            const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onQrCodeScanned,
+                (errorMessage) => { /* scanning errors ignored */ }
+            ).catch(err => {
+                feedback.className = 'scan-result-card danger';
+                feedback.innerHTML = '<strong>⚠️ Error de Cámara:</strong> Permite el acceso a la cámara en tu navegador para escanear pases.';
+            });
+        }
+
+        function closeScannerModal() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                }).catch(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                });
+            } else {
+                document.getElementById('scanner-modal').classList.remove('active');
+            }
+        }
+
+        async function onQrCodeScanned(decodedText) {
+            if (isProcessingScan) return;
+            isProcessingScan = true;
+
+            try {
+                let passData = null;
+                try {
+                    passData = JSON.parse(decodedText);
+                } catch (e) {
+                    // Try parsing URL query parameters if a link was encoded
+                    if (decodedText.includes('invitado=') || decodedText.includes('pid=')) {
+                        const urlObj = new URL(decodedText);
+                        passData = {
+                            id: urlObj.searchParams.get('pid') || urlObj.searchParams.get('id') || '',
+                            guest: urlObj.searchParams.get('invitado') || '',
+                            passes: Number(urlObj.searchParams.get('pases') || 1),
+                            table: urlObj.searchParams.get('mesa') || 'Mesa General'
+                        };
+                    }
+                }
+
+                const scannedId = normId(passData ? passData.id : decodedText);
+                const scannedName = normStr(passData ? (passData.guest || passData.name) : '');
+
+                // Buscar en la lista local de filas de Excel
+                const matchedIndex = rowsList.findIndex(r => {
+                    const rId = normId(r.idRegistro);
+                    const rName = normStr(r.nombreInvitado);
+                    return (scannedId && rId && (rId === scannedId || rId.startsWith(scannedId) || scannedId.startsWith(rId))) ||
+                           (scannedName && rName && rName === scannedName);
+                });
+
+                const feedback = document.getElementById('scan-feedback');
+                const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                if (matchedIndex === -1) {
+                    // ❌ NO ENCONTRADO EN LA LISTA
+                    feedback.className = 'scan-result-card danger';
+                    feedback.innerHTML = `
+                        <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">❌ PASE NO AUTORIZADO</div>
+                        <div>El código <code>${'$'}{scannedId || decodedText.substring(0, 15)}</code> no pertenece a la lista de invitados de este evento.</div>
+                    `;
+                    playBeep(false);
+                } else {
+                    const guestRec = rowsList[matchedIndex];
+                    const alreadyCheckedIn = String(guestRec.estadoCheckIn).toUpperCase().includes('CHECK-IN OK');
+
+                    if (alreadyCheckedIn) {
+                        // ⚠️ YA HABÍA INGRESADO
+                        feedback.className = 'scan-result-card warning';
+                        feedback.innerHTML = `
+                            <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ PASE YA UTILIZADO PREVIAMENTE</div>
+                            <div><strong>Invitado:</strong> ${'$'}{guestRec.nombreInvitado}</div>
+                            <div><strong>Boletos:</strong> ${'$'}{guestRec.boletosConfirmados} pases | <strong>Mesa:</strong> ${'$'}{guestRec.mesaAsignada}</div>
+                            <div style="margin-top: 6px; font-size: 11px;">Estado actual: <strong>${'$'}{guestRec.estadoCheckIn}</strong></div>
+                        `;
+                        playBeep(false);
+                    } else {
+                        // 🟢 INGRESO VÁLIDO Y EXITOSO
+                        const checkInStatus = 'CHECK-IN OK (' + nowStr + ')';
+                        guestRec.estadoCheckIn = checkInStatus;
+                        guestRec.asistencia = 'Sí';
+
+                        feedback.className = 'scan-result-card success';
+                        feedback.innerHTML = `
+                            <div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">🟢 ¡ACCESO CONCEDIDO!</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #047857;">${'$'}{guestRec.nombreInvitado}</div>
+                            <div style="margin-top: 4px;">
+                                🎟️ <strong>${'$'}{guestRec.boletosConfirmados} Pases Autorizados</strong> &bull; 🪑 <strong>${'$'}{guestRec.mesaAsignada}</strong>
+                            </div>
+                            <div style="margin-top: 8px;"><span class="badge-verified">Ingreso Registrado: ${'$'}{nowStr}</span></div>
+                        `;
+                        playBeep(true);
+                        renderTable();
+
+                        // Notificar en tiempo real al canal cloud de ntfy y a la app del anfitrión
+                        runCatchingNtfyUpdate(guestRec);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setTimeout(() => { isProcessingScan = false; }, 2500);
+            }
+        }
+
+        async function runCatchingNtfyUpdate(record) {
+            try {
+                const payload = JSON.stringify(record);
+                await fetch('https://ntfy.sh/' + TOPIC, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+            } catch (e) {
+                console.warn('Could not post check-in to ntfy:', e);
+            }
+        }
+
+        function playBeep(success) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = success ? 'sine' : 'sawtooth';
+                osc.frequency.value = success ? 880 : 220;
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.start();
+                osc.stop(ctx.currentTime + (success ? 0.18 : 0.4));
+            } catch (e) {}
+        }
+
+</script>
 </body>
 </html>
