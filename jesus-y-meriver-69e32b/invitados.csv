@@ -1,3 +1,3 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
-"EC-D18FA7","2026-11-10 00:31","TEST 2 Url especial","Pendiente",10,"Mesa 5","","PENDIENTE"
-"EC-14JSHT","2026-11-10 00:31","TEST","Sí",2,"Mesa General","Verificado con Escáner QR en Recepción","CHECK-IN OK (2026-11-10 00:07)"
+"EC-D18FA7","2026-11-10 06:32","TEST 2 Url especial","Sí","10","Mesa 5","","PENDIENTE"
+"EC-14JSHT","2026-11-10 00:31","TEST","Sí","2","Mesa General","Verificado con Escáner QR en Recepción","CHECK-IN OK (2026-11-10 00:07)"

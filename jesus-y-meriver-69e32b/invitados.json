@@ -1,1 +1,22 @@
-[{"idRegistro":"EC-D18FA7","fechaHora":"2026-11-10 00:31","nombreInvitado":"TEST 2 Url especial","asistencia":"Pendiente","boletosConfirmados":10,"mesaAsignada":"Mesa 5","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-14JSHT","fechaHora":"2026-11-10 00:31","nombreInvitado":"TEST","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa General","mensajeParaAnfitriones":"Verificado con Escáner QR en Recepción","estadoCheckIn":"CHECK-IN OK (2026-11-10 00:07)"}]
+[
+  {
+    "idRegistro": "EC-D18FA7",
+    "fechaHora": "2026-11-10 06:32",
+    "nombreInvitado": "TEST 2 Url especial",
+    "asistencia": "Sí",
+    "boletosConfirmados": 10,
+    "mesaAsignada": "Mesa 5",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-14JSHT",
+    "fechaHora": "2026-11-10 00:31",
+    "nombreInvitado": "TEST",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa General",
+    "mensajeParaAnfitriones": "Verificado con Escáner QR en Recepción",
+    "estadoCheckIn": "CHECK-IN OK (2026-11-10 00:07)"
+  }
+]
