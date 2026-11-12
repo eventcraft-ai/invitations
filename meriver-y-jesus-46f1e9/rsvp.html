@@ -7,11 +7,24 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; }
-        header { background: #065f46; color: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-        .btn { padding: 9px 14px; border-radius: 10px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; }
+        header { background: linear-gradient(135deg, #065f46, #0d9488); color: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .btn { padding: 9px 14px; border-radius: 10px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; transition: transform .15s ease; }
+        .btn:active { transform: scale(0.97); }
         .btn-light { background: #fff; color: #065f46; }
         .btn-ghost { background: rgba(255,255,255,0.18); color: #fff; }
         main { max-width: 1150px; margin: 0 auto; padding: 24px 16px; }
+        .live-scan-banner { display: none; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); animation: bannerPop .28s ease; }
+        .live-scan-banner.success { display: flex; background: #ecfdf5; border: 2px solid #10b981; color: #065f46; }
+        .live-scan-banner.warning { display: flex; background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; }
+        .live-scan-banner.danger { display: flex; background: #fef2f2; border: 2px solid #ef4444; color: #991b1b; }
+        @keyframes bannerPop { from { opacity: 0; transform: translateY(-6px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .scan-history-wrap { display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; margin-bottom: 18px; }
+        .scan-history-wrap.active { display: block; }
+        .scan-history-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .scan-chip { font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+        .scan-chip.success { background: #d1fae5; color: #065f46; }
+        .scan-chip.warning { background: #fef3c7; color: #92400e; }
+        .scan-chip.danger { background: #fee2e2; color: #991b1b; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
         .stat-card { background: #fff; padding: 16px; border-radius: 14px; border: 1px solid #e2e8f0; }
         .table-wrap { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
@@ -26,12 +39,14 @@
     <style>
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); }
         .modal-overlay.active { display: flex; }
-        .modal-card { background: #fff; width: 100%; max-width: 480px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; max-height: 90vh; overflow-y: auto; }
+        .modal-card { background: #fff; width: 100%; max-width: 490px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; max-height: 92vh; overflow-y: auto; }
         #qr-reader { width: 100%; border-radius: 12px; overflow: hidden; margin: 12px 0; border: 2px dashed #cbd5e1; }
+        .manual-verify-row { display: flex; gap: 8px; margin-top: 10px; }
+        .manual-verify-row input { flex: 1; padding: 9px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 13px; }
         .scan-result-card { margin-top: 14px; padding: 14px; border-radius: 14px; text-align: left; font-size: 13px; display: none; }
-        .scan-result-card.success { background: #ecfdf5; border: 1px solid #10b981; color: #065f46; display: block; }
-        .scan-result-card.warning { background: #fffbeb; border: 1px solid #f59e0b; color: #92400e; display: block; }
-        .scan-result-card.danger { background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; display: block; }
+        .scan-result-card.success { background: #ecfdf5; border: 2px solid #10b981; color: #065f46; display: block; }
+        .scan-result-card.warning { background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; display: block; }
+        .scan-result-card.danger { background: #fef2f2; border: 2px solid #ef4444; color: #991b1b; display: block; }
         .badge-verified { background: #10b981; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; text-transform: uppercase; }
         .btn-scan { background: #d97706; color: #fff; display: inline-flex; align-items: center; gap: 6px; }
         .btn-scan:hover { background: #b45309; }
@@ -43,7 +58,7 @@
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.85;">EventCraft AI • Cloud Sheets Sync</div>
             <h1 style="margin: 4px 0 0 0; font-size: 18px;">📊 Confirmaciones RSVP: Meriver y Jesus</h1>
         </div>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
             <button onclick="fetchCloudRsvps()" class="btn btn-ghost">🔄 Actualizar en Vivo</button>
             <button onclick="openScannerModal()" class="btn btn-scan">📷 Escáner QR de Recepción</button>
             <button onclick="downloadCsv()" class="btn btn-light">⬇️ Descargar Excel (.CSV)</button>
@@ -51,6 +66,17 @@
     </header>
 
     <main>
+        <!-- AVISO EN TIEMPO REAL DE ESCANEO QR (INDICA SI ESTÁ O NO EN LA LISTA DE INVITADOS) -->
+        <div id="live-scan-banner" class="live-scan-banner">
+            <div id="live-scan-banner-content" style="flex: 1;"></div>
+            <button onclick="dismissLiveBanner()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: inherit; font-weight: 800;">✕</button>
+        </div>
+
+        <div id="scan-history-wrap" class="scan-history-wrap">
+            <div style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700;">Últimos Escaneos QR en Puerta</div>
+            <div id="scan-history-list" class="scan-history-list"></div>
+        </div>
+
         <div class="stats">
             <div class="stat-card">
                 <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Total Boletos Confirmados</div>
@@ -94,10 +120,15 @@
                 <button onclick="closeScannerModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✕</button>
             </div>
             <p style="font-size: 12px; color: #64748b; margin: 0 0 10px 0;">
-                Apunta la cámara al código QR del pase del invitado (físico o en pantalla).
+                Apunta la cámara al código QR o escribe el código/nombre del pase para validar al instante si está en la lista.
             </p>
 
             <div id="qr-reader"></div>
+
+            <div class="manual-verify-row">
+                <input id="manual-qr-input" type="text" placeholder="Ej. EC-8F29A1 o Nombre del invitado..." onkeydown="if(event.key==='Enter'){verifyManualQrCode();}" />
+                <button onclick="verifyManualQrCode()" class="btn btn-scan">Verificar</button>
+            </div>
 
             <div id="scan-feedback" class="scan-result-card"></div>
 
@@ -109,17 +140,30 @@
 
     <script>
         const TOPIC = "eventcraft_rsvp_46f1e9a57caf";
+        const EVENT_SLUG = "meriver-y-jesus-46f1e9";
         const initialRows = [];
         const rowsList = [];
+        const seenAlertIds = new Set();
+        const scanHistory = [];
+        let currentBannerAlertId = '';
 
+        function escHtml(v) {
+            return String(v || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
         function normStr(s) {
             return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
         }
         function normId(id) {
-            return String(id || '').trim().substring(0, 8).toUpperCase();
+            return String(id || '').trim().substring(0, 9).toUpperCase();
         }
 
         function upsertRecord(rec) {
+            if (!rec || rec.eventType === 'qr_scan_alert') return;
             const incomingId = normId(rec.idRegistro);
             const incomingName = normStr(rec.nombreInvitado);
             if (!incomingId && !incomingName) return;
@@ -127,12 +171,12 @@
             const existingIdx = rowsList.findIndex(item => {
                 const itemId = normId(item.idRegistro);
                 const itemName = normStr(item.nombreInvitado);
-                return (incomingId && itemId && (itemId === incomingId || itemId.startsWith(incomingId) || incomingId.startsWith(itemId))) ||
-                       (incomingName && itemName && itemName === incomingName);
+                const idMatch = Boolean(incomingId && itemId && (itemId === incomingId || (Math.min(incomingId.length, itemId.length) >= 5 && (itemId.startsWith(incomingId) || incomingId.startsWith(itemId)))));
+                return idMatch || (incomingName && itemName && itemName === incomingName);
             });
 
             const cleanRec = {
-                idRegistro: incomingId || ('EC-' + Math.random().toString(36).substring(2, 7).toUpperCase()),
+                idRegistro: incomingId || ('EC-' + Math.random().toString(36).substring(2, 8).toUpperCase()),
                 fechaHora: rec.fechaHora || '',
                 nombreInvitado: rec.nombreInvitado || '',
                 asistencia: rec.asistencia || 'Pendiente',
@@ -161,10 +205,69 @@
 
         initialRows.forEach(r => upsertRecord(r));
 
+        function handleIncomingScanAlert(alertObj, shouldBeep) {
+            if (!alertObj || alertObj.eventType !== 'qr_scan_alert') return;
+            const aid = String(alertObj.alertId || '');
+            if (aid && seenAlertIds.has(aid)) return;
+            if (aid) seenAlertIds.add(aid);
+
+            const statusType = alertObj.statusType || (alertObj.foundOnList ? 'success' : 'danger');
+            const summaryLabel = alertObj.foundOnList
+                ? ('✅ EN LISTA: ' + (alertObj.guestName || alertObj.guestId || 'Invitado'))
+                : ('❌ NO EN LISTA: ' + (alertObj.guestName || alertObj.guestId || 'Desconocido'));
+            scanHistory.unshift({
+                statusType: statusType,
+                label: summaryLabel + (alertObj.fechaHora ? (' (' + String(alertObj.fechaHora).slice(-5) + ')') : '')
+            });
+            if (scanHistory.length > 5) scanHistory.length = 5;
+            renderScanHistory();
+
+            let dismissedId = '';
+            try { dismissedId = localStorage.getItem('ec_dismissed_' + TOPIC) || ''; } catch (e) {}
+            if (aid && aid === dismissedId) return;
+
+            currentBannerAlertId = aid;
+            const banner = document.getElementById('live-scan-banner');
+            const content = document.getElementById('live-scan-banner-content');
+            banner.className = 'live-scan-banner ' + statusType;
+            const headline = statusType === 'success'
+                ? '✅ SÍ SE ENCUENTRA EN LA LISTA DE INVITADOS'
+                : (statusType === 'warning'
+                    ? (alertObj.foundOnList ? '⚠️ AVISO DE PASE EN LISTA' : '⚠️ ALERTA DE ACCESO')
+                    : '❌ NO SE ENCUENTRA EN LA LISTA DE INVITADOS');
+            content.innerHTML =
+                '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">' + escHtml(headline) + '</div>' +
+                '<div style="font-size: 13px; font-weight: 600;">' + escHtml(alertObj.detailMessage || '') + '</div>';
+
+            if (shouldBeep) {
+                playBeep(statusType === 'success');
+            }
+        }
+
+        function renderScanHistory() {
+            const wrap = document.getElementById('scan-history-wrap');
+            const listEl = document.getElementById('scan-history-list');
+            if (!scanHistory.length) {
+                wrap.className = 'scan-history-wrap';
+                return;
+            }
+            wrap.className = 'scan-history-wrap active';
+            listEl.innerHTML = scanHistory.map(item =>
+                '<span class="scan-chip ' + escHtml(item.statusType) + '">' + escHtml(item.label) + '</span>'
+            ).join('');
+        }
+
+        function dismissLiveBanner() {
+            document.getElementById('live-scan-banner').className = 'live-scan-banner';
+            if (currentBannerAlertId) {
+                try { localStorage.setItem('ec_dismissed_' + TOPIC, currentBannerAlertId); } catch (e) {}
+            }
+        }
+
         async function fetchCloudRsvps() {
             // 1. Leer lista permanente desde el repo de Git (<slug>/invitados.json)
             try {
-                const gitRes = await fetch("https://raw.githubusercontent.com/eventcraft-ai/invitations/main/meriver-y-jesus-46f1e9/invitados.json?t=" + Date.now(), { cache: 'no-store' });
+                const gitRes = await fetch("https://raw.githubusercontent.com/eventcraft-ai/invitations/main/" + EVENT_SLUG + "/invitados.json?t=" + Date.now(), { cache: 'no-store' });
                 if (gitRes.ok) {
                     const gitList = await gitRes.json();
                     if (Array.isArray(gitList)) {
@@ -174,7 +277,8 @@
             } catch (e) {
                 console.warn(e);
             }
-            // 2. Complementar con notificaciones en tiempo real
+            // 2. Complementar con notificaciones y alertas de escaneo QR en tiempo real
+            let latestAlert = null;
             try {
                 const res = await fetch("https://ntfy.sh/" + TOPIC + "/json?poll=1&since=all");
                 const text = await res.text();
@@ -184,12 +288,19 @@
                         const env = JSON.parse(line);
                         if (env.event === 'message' && env.message && env.message.startsWith('{')) {
                             const rec = JSON.parse(env.message);
-                            upsertRecord(rec);
+                            if (rec.eventType === 'qr_scan_alert') {
+                                latestAlert = rec;
+                            } else {
+                                upsertRecord(rec);
+                            }
                         }
                     } catch (e) {}
                 });
             } catch (err) {
                 console.warn(err);
+            }
+            if (latestAlert) {
+                handleIncomingScanAlert(latestAlert, false);
             }
             renderTable();
         }
@@ -204,16 +315,15 @@
                     confirmedTickets += Number(r.boletosConfirmados || 0);
                 }
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-family: monospace; font-size: 12px;">${r.idRegistro || ''}</td>
-                    <td style="font-size: 12px; color: #64748b;">${r.fechaHora || ''}</td>
-                    <td style="font-weight: 700;">${r.nombreInvitado || ''}</td>
-                    <td class="${String(r.asistencia).startsWith('S') ? 'yes' : 'no'}">${r.asistencia || ''}</td>
-                    <td style="font-weight: 700;">${r.boletosConfirmados || 0}</td>
-                    <td>${r.mesaAsignada || ''}</td>
-                    <td style="font-size: 12px;">${r.mensajeParaAnfitriones || ''}</td>
-                    <td style="font-size: 12px; font-weight: 700;">${r.estadoCheckIn || 'PENDIENTE'}</td>
-                `;
+                tr.innerHTML =
+                    '<td style="font-family: monospace; font-size: 12px;">' + escHtml(r.idRegistro || '') + '</td>' +
+                    '<td style="font-size: 12px; color: #64748b;">' + escHtml(r.fechaHora || '') + '</td>' +
+                    '<td style="font-weight: 700;">' + escHtml(r.nombreInvitado || '') + '</td>' +
+                    '<td class="' + (String(r.asistencia).startsWith('S') ? 'yes' : 'no') + '">' + escHtml(r.asistencia || '') + '</td>' +
+                    '<td style="font-weight: 700;">' + escHtml(r.boletosConfirmados || 0) + '</td>' +
+                    '<td>' + escHtml(r.mesaAsignada || '') + '</td>' +
+                    '<td style="font-size: 12px;">' + escHtml(r.mensajeParaAnfitriones || '') + '</td>' +
+                    '<td style="font-size: 12px; font-weight: 700;">' + escHtml(r.estadoCheckIn || 'PENDIENTE') + '</td>';
                 tbody.appendChild(tr);
             });
 
@@ -238,24 +348,53 @@
             a.click();
         }
 
+        function subscribeLiveEvents() {
+            if (typeof EventSource === 'undefined') return;
+            try {
+                const sse = new EventSource("https://ntfy.sh/" + TOPIC + "/sse");
+                sse.onmessage = function (evt) {
+                    try {
+                        const env = JSON.parse(evt.data);
+                        if (env.event === 'message' && env.message && env.message.startsWith('{')) {
+                            const rec = JSON.parse(env.message);
+                            if (rec.eventType === 'qr_scan_alert') {
+                                handleIncomingScanAlert(rec, true);
+                            } else {
+                                upsertRecord(rec);
+                                renderTable();
+                            }
+                        }
+                    } catch (e) {}
+                };
+            } catch (e) {}
+        }
+
         renderTable();
         fetchCloudRsvps();
+        subscribeLiveEvents();
         setInterval(fetchCloudRsvps, 6000);
 
         // ==========================================
-        // ESCÁNER QR WEB PARA CUALQUIER TELÉFONO
+        // ESCÁNER QR WEB PARA CUALQUIER TELÉFONO / PC
         // ==========================================
         let html5QrCode = null;
         let isProcessingScan = false;
 
         function openScannerModal() {
             document.getElementById('scanner-modal').classList.add('active');
+            isProcessingScan = false;
             const feedback = document.getElementById('scan-feedback');
             feedback.className = 'scan-result-card';
-            feedback.style.display = 'none';
+            feedback.style.display = '';
+            feedback.innerHTML = '';
 
-            if (!html5QrCode) {
+            if (!html5QrCode && typeof Html5Qrcode !== 'undefined') {
                 html5QrCode = new Html5Qrcode("qr-reader");
+            }
+            if (!html5QrCode) {
+                feedback.className = 'scan-result-card warning';
+                feedback.innerHTML = '<strong>⚠️ Escáner en modo manual:</strong> Escribe o pega el código EC-XXXXXX o el nombre arriba para verificar si está en la lista.';
+                return;
             }
 
             const config = { fps: 10, qrbox: { width: 220, height: 220 } };
@@ -265,8 +404,8 @@
                 onQrCodeScanned,
                 (errorMessage) => { /* scanning errors ignored */ }
             ).catch(err => {
-                feedback.className = 'scan-result-card danger';
-                feedback.innerHTML = '<strong>⚠️ Error de Cámara:</strong> Permite el acceso a la cámara en tu navegador para escanear pases.';
+                feedback.className = 'scan-result-card warning';
+                feedback.innerHTML = '<strong>⚠️ Cámara no disponible:</strong> Permite el acceso a la cámara o usa el campo superior para verificar el código/nombre manualmente.';
             });
         }
 
@@ -282,89 +421,173 @@
             }
         }
 
+        function verifyManualQrCode() {
+            const input = document.getElementById('manual-qr-input');
+            const val = (input ? input.value : '').trim();
+            if (!val) return;
+            isProcessingScan = false;
+            onQrCodeScanned(val);
+            input.value = '';
+        }
+
         async function onQrCodeScanned(decodedText) {
             if (isProcessingScan) return;
             isProcessingScan = true;
 
             try {
+                const cleanRaw = String(decodedText || '').trim();
                 let passData = null;
                 try {
-                    passData = JSON.parse(decodedText);
+                    passData = JSON.parse(cleanRaw);
                 } catch (e) {
-                    // Try parsing URL query parameters if a link was encoded
-                    if (decodedText.includes('invitado=') || decodedText.includes('pid=')) {
-                        const urlObj = new URL(decodedText);
+                    if (cleanRaw.includes('invitado=') || cleanRaw.includes('pid=')) {
+                        const urlObj = new URL(cleanRaw);
                         passData = {
                             id: urlObj.searchParams.get('pid') || urlObj.searchParams.get('id') || '',
                             guest: urlObj.searchParams.get('invitado') || '',
                             passes: Number(urlObj.searchParams.get('pases') || 1),
-                            table: urlObj.searchParams.get('mesa') || 'Mesa General'
+                            table: urlObj.searchParams.get('mesa') || 'Mesa General',
+                            event: urlObj.searchParams.get('evento') || urlObj.searchParams.get('event') || ''
                         };
                     }
                 }
 
-                const scannedId = normId(passData ? passData.id : decodedText);
-                const scannedName = normStr(passData ? (passData.guest || passData.name) : '');
+                const scannedId = normId(passData ? passData.id : cleanRaw);
+                const scannedName = normStr(passData ? (passData.guest || passData.name) : cleanRaw);
+                const scannedEvent = String(passData ? (passData.event || passData.evento || '') : '').trim().toLowerCase();
+                const wrongEvent = Boolean(scannedEvent && EVENT_SLUG && scannedEvent !== EVENT_SLUG.toLowerCase());
 
-                // Buscar en la lista local de filas de Excel
-                const matchedIndex = rowsList.findIndex(r => {
+                const matchedIndex = wrongEvent ? -1 : rowsList.findIndex(r => {
                     const rId = normId(r.idRegistro);
                     const rName = normStr(r.nombreInvitado);
-                    return (scannedId && rId && (rId === scannedId || rId.startsWith(scannedId) || scannedId.startsWith(rId))) ||
-                           (scannedName && rName && rName === scannedName);
+                    const idMatch = Boolean(scannedId && rId && (rId === scannedId || (Math.min(scannedId.length, rId.length) >= 5 && (rId.startsWith(scannedId) || scannedId.startsWith(rId)))));
+                    return idMatch || (scannedName && rName && rName === scannedName);
                 });
 
                 const feedback = document.getElementById('scan-feedback');
+                feedback.style.display = '';
                 const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const nowStamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+                let alertPayload = null;
 
                 if (matchedIndex === -1) {
-                    // ❌ NO ENCONTRADO EN LA LISTA
+                    // ❌ NO SE ENCUENTRA EN LA LISTA DE INVITADOS
+                    const whoLabel = (passData && (passData.guest || passData.name))
+                        ? String(passData.guest || passData.name)
+                        : (scannedId || cleanRaw.substring(0, 24));
+                    const wrongEvtMsg = wrongEvent ? (' (QR de otro evento: ' + scannedEvent + ')') : '';
+                    const detail = whoLabel + ' NO se encuentra en la lista de invitados de este evento.' + wrongEvtMsg;
+
                     feedback.className = 'scan-result-card danger';
-                    feedback.innerHTML = `
-                        <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">❌ PASE NO AUTORIZADO</div>
-                        <div>El código <code>${scannedId || decodedText.substring(0, 15)}</code> no pertenece a la lista de invitados de este evento.</div>
-                    `;
+                    feedback.innerHTML =
+                        '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">❌ NO ESTÁ EN LA LISTA DE INVITADOS</div>' +
+                        '<div><strong>Código/Invitado:</strong> ' + escHtml(whoLabel) + escHtml(wrongEvtMsg) + '</div>' +
+                        '<div style="margin-top: 4px; font-size: 12px;">Este pase no está registrado en esta hoja RSVP. Acceso denegado.</div>';
+
+                    alertPayload = {
+                        eventType: 'qr_scan_alert',
+                        alertId: 'WEB-' + Date.now(),
+                        foundOnList: false,
+                        statusType: 'danger',
+                        guestName: whoLabel,
+                        guestId: scannedId,
+                        passes: 0,
+                        tableLabel: '',
+                        detailMessage: detail,
+                        source: 'web',
+                        fechaHora: nowStamp
+                    };
                     playBeep(false);
                 } else {
                     const guestRec = rowsList[matchedIndex];
                     const alreadyCheckedIn = String(guestRec.estadoCheckIn).toUpperCase().includes('CHECK-IN OK');
+                    const declined = String(guestRec.asistencia).toLowerCase().startsWith('n');
 
-                    if (alreadyCheckedIn) {
-                        // ⚠️ YA HABÍA INGRESADO
+                    if (declined) {
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') SÍ está en la lista pero registró que NO asistiría (0 pases).';
                         feedback.className = 'scan-result-card warning';
-                        feedback.innerHTML = `
-                            <div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ PASE YA UTILIZADO PREVIAMENTE</div>
-                            <div><strong>Invitado:</strong> ${guestRec.nombreInvitado}</div>
-                            <div><strong>Boletos:</strong> ${guestRec.boletosConfirmados} pases | <strong>Mesa:</strong> ${guestRec.mesaAsignada}</div>
-                            <div style="margin-top: 6px; font-size: 11px;">Estado actual: <strong>${guestRec.estadoCheckIn}</strong></div>
-                        `;
+                        feedback.innerHTML =
+                            '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ ESTÁ EN LISTA PERO CANCELÓ ASISTENCIA</div>' +
+                            '<div><strong>Invitado:</strong> ' + escHtml(guestRec.nombreInvitado) + ' (' + escHtml(guestRec.idRegistro) + ')</div>' +
+                            '<div style="margin-top: 4px; font-size: 12px;">Marcó <strong>Asistencia: No</strong> (0 pases autorizados).</div>';
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'warning',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: 0,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
+                        playBeep(false);
+                    } else if (alreadyCheckedIn) {
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') ya ingresó antes • ' + guestRec.mesaAsignada + ' (' + guestRec.estadoCheckIn + ').';
+                        feedback.className = 'scan-result-card warning';
+                        feedback.innerHTML =
+                            '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ SÍ ESTÁ EN LISTA — PASE YA UTILIZADO</div>' +
+                            '<div><strong>Invitado:</strong> ' + escHtml(guestRec.nombreInvitado) + '</div>' +
+                            '<div><strong>Boletos:</strong> ' + escHtml(guestRec.boletosConfirmados) + ' pases | <strong>Mesa:</strong> ' + escHtml(guestRec.mesaAsignada) + '</div>' +
+                            '<div style="margin-top: 6px; font-size: 11px;">Estado actual: <strong>' + escHtml(guestRec.estadoCheckIn) + '</strong></div>';
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'warning',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: guestRec.boletosConfirmados,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
                         playBeep(false);
                     } else {
-                        // 🟢 INGRESO VÁLIDO Y EXITOSO
                         const checkInStatus = 'CHECK-IN OK (' + nowStr + ')';
                         guestRec.estadoCheckIn = checkInStatus;
                         guestRec.asistencia = 'Sí';
+                        const validPasses = Number(guestRec.boletosConfirmados || 1) || 1;
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') SÍ se encuentra en la lista • ' + validPasses + ' pases • ' + guestRec.mesaAsignada + '.';
 
                         feedback.className = 'scan-result-card success';
-                        feedback.innerHTML = `
-                            <div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">🟢 ¡ACCESO CONCEDIDO!</div>
-                            <div style="font-size: 14px; font-weight: 700; color: #047857;">${guestRec.nombreInvitado}</div>
-                            <div style="margin-top: 4px;">
-                                🎟️ <strong>${guestRec.boletosConfirmados} Pases Autorizados</strong> &bull; 🪑 <strong>${guestRec.mesaAsignada}</strong>
-                            </div>
-                            <div style="margin-top: 8px;"><span class="badge-verified">Ingreso Registrado: ${nowStr}</span></div>
-                        `;
+                        feedback.innerHTML =
+                            '<div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">✅ SÍ ESTÁ EN LA LISTA — ¡ACCESO CONCEDIDO!</div>' +
+                            '<div style="font-size: 14px; font-weight: 700; color: #047857;">' + escHtml(guestRec.nombreInvitado) + '</div>' +
+                            '<div style="margin-top: 4px;">🎟️ <strong>' + escHtml(validPasses) + ' Pases Autorizados</strong> &bull; 🪑 <strong>' + escHtml(guestRec.mesaAsignada) + '</strong></div>' +
+                            '<div style="margin-top: 8px;"><span class="badge-verified">Ingreso Registrado: ' + escHtml(nowStr) + '</span></div>';
+
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'success',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: validPasses,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
                         playBeep(true);
                         renderTable();
-
-                        // Notificar en tiempo real al canal cloud de ntfy y a la app del anfitrión
                         runCatchingNtfyUpdate(guestRec);
                     }
+                }
+
+                if (alertPayload) {
+                    handleIncomingScanAlert(alertPayload, false);
+                    runCatchingNtfyUpdate(alertPayload);
                 }
             } catch (err) {
                 console.error(err);
             } finally {
-                setTimeout(() => { isProcessingScan = false; }, 2500);
+                setTimeout(() => { isProcessingScan = false; }, 1800);
             }
         }
 
