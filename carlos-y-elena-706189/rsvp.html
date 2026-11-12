@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoja RSVP en Vivo - Mis XV Valentina</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; }
+        header { background: linear-gradient(135deg, #065f46, #0d9488); color: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+        .btn { padding: 9px 14px; border-radius: 10px; border: none; font-weight: 700; font-size: 12px; cursor: pointer; transition: transform .15s ease; }
+        .btn:active { transform: scale(0.97); }
+        .btn-light { background: #fff; color: #065f46; }
+        .btn-ghost { background: rgba(255,255,255,0.18); color: #fff; }
+        main { max-width: 1150px; margin: 0 auto; padding: 24px 16px; }
+        .live-scan-banner { display: none; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); animation: bannerPop .28s ease; }
+        .live-scan-banner.success { display: flex; background: #ecfdf5; border: 2px solid #10b981; color: #065f46; }
+        .live-scan-banner.warning { display: flex; background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; }
+        .live-scan-banner.danger { display: flex; background: #fef2f2; border: 2px solid #ef4444; color: #991b1b; }
+        @keyframes bannerPop { from { opacity: 0; transform: translateY(-6px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .scan-history-wrap { display: none; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; margin-bottom: 18px; }
+        .scan-history-wrap.active { display: block; }
+        .scan-history-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .scan-chip { font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+        .scan-chip.success { background: #d1fae5; color: #065f46; }
+        .scan-chip.warning { background: #fef3c7; color: #92400e; }
+        .scan-chip.danger { background: #fee2e2; color: #991b1b; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .stat-card { background: #fff; padding: 16px; border-radius: 14px; border: 1px solid #e2e8f0; }
+        .table-wrap { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+        th { background: #0f172a; color: #fff; padding: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+        td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background: #f1f5f9; }
+        .yes { color: #047857; font-weight: 700; }
+        .no { color: #be123c; font-weight: 700; }
+    </style>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-card { background: #fff; width: 100%; max-width: 490px; border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: center; max-height: 92vh; overflow-y: auto; }
+        #qr-reader { width: 100%; border-radius: 12px; overflow: hidden; margin: 12px 0; border: 2px dashed #cbd5e1; }
+        .manual-verify-row { display: flex; gap: 8px; margin-top: 10px; }
+        .manual-verify-row input { flex: 1; padding: 9px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 13px; }
+        .scan-result-card { margin: 10px 0 12px 0; padding: 14px 16px; border-radius: 14px; text-align: left; font-size: 13px; display: none; animation: bannerPop .24s ease; }
+        .scan-result-card.success { background: #dcfce7; border: 2px solid #16a34a; color: #14532d; display: block; box-shadow: 0 8px 20px rgba(22, 163, 74, 0.20); }
+        .scan-result-card.warning { background: #fffbeb; border: 2px solid #f59e0b; color: #92400e; display: block; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.16); }
+        .scan-result-card.danger { background: #fee2e2; border: 2px solid #dc2626; color: #7f1d1d; display: block; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.20); }
+        .badge-verified { background: #10b981; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; text-transform: uppercase; }
+        .btn-scan { background: #d97706; color: #fff; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-scan:hover { background: #b45309; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.85;">EventCraft AI • Cloud Sheets Sync</div>
+            <h1 style="margin: 4px 0 0 0; font-size: 18px;">📊 Confirmaciones RSVP: Mis XV Valentina</h1>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <button onclick="fetchCloudRsvps()" class="btn btn-ghost">🔄 Actualizar en Vivo</button>
+            <button onclick="openScannerModal()" class="btn btn-scan">📷 Escáner QR de Recepción</button>
+            <button onclick="downloadCsv()" class="btn btn-light">⬇️ Descargar Excel (.CSV)</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- AVISO EN TIEMPO REAL DE ESCANEO QR (INDICA SI ESTÁ O NO EN LA LISTA DE INVITADOS) -->
+        <div id="live-scan-banner" class="live-scan-banner">
+            <div id="live-scan-banner-content" style="flex: 1;"></div>
+            <button onclick="dismissLiveBanner()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: inherit; font-weight: 800;">✕</button>
+        </div>
+
+        <div id="scan-history-wrap" class="scan-history-wrap">
+            <div style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700;">Últimos Escaneos QR en Puerta</div>
+            <div id="scan-history-list" class="scan-history-list"></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Total Boletos Confirmados</div>
+                <div id="stat-confirmed" style="font-size: 28px; font-weight: 800; color: #047857; margin-top: 4px;">0</div>
+            </div>
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Familias / Invitados Únicos</div>
+                <div id="stat-total" style="font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 4px;">0</div>
+            </div>
+            <div class="stat-card">
+                <div style="font-size: 11px; text-transform: uppercase; color: #64748b;">Canal Cloud en Vivo</div>
+                <div style="font-family: monospace; font-size: 13px; margin-top: 8px;">eventcraft_rsvp_706189ef9ab4</div>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID_Registro</th>
+                        <th>Fecha_Hora</th>
+                        <th>Nombre_Invitado</th>
+                        <th>Asistencia (Sí/No)</th>
+                        <th>Boletos_Confirmados</th>
+                        <th>Mesa_Asignada</th>
+                        <th>Mensaje_Para_Anfitriones</th>
+                        <th>Estado_CheckIn</th>
+                    </tr>
+                </thead>
+                <tbody id="sheet-body"></tbody>
+            </table>
+        </div>
+    </main>
+    <!-- MODAL ESCÁNER QR PARA CADENEROS / HOSTESS -->
+    <div id="scanner-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="margin: 0; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+                    📷 Escáner QR de Recepción
+                </h3>
+                <button onclick="closeScannerModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+            <p style="font-size: 12px; color: #64748b; margin: 0 0 10px 0;">
+                Apunta la cámara al código QR o escribe el código/nombre del pase para validar al instante si está en la lista.
+            </p>
+
+            <div class="manual-verify-row" style="margin-top: 0; margin-bottom: 10px;">
+                <input id="manual-qr-input" type="text" placeholder="Ej. EC-8F29A1 o Nombre del invitado..." onkeydown="if(event.key==='Enter'){verifyManualQrCode();}" />
+                <button onclick="verifyManualQrCode()" class="btn btn-scan">Verificar</button>
+            </div>
+
+            <div id="scan-feedback" class="scan-result-card"></div>
+
+            <div id="qr-reader"></div>
+
+            <div style="margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="resetScannerFeedback()" class="btn btn-ghost" style="background: #dcfce7; color: #166534;">📷 Escanear otro pase</button>
+                <button onclick="closeScannerModal()" class="btn btn-ghost" style="background: #e2e8f0; color: #0f172a;">Cerrar Escáner</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TOPIC = "eventcraft_rsvp_706189ef9ab4";
+        const EVENT_SLUG = "carlos-y-elena-706189";
+        const initialRows = [];
+        const rowsList = [];
+        const seenAlertIds = new Set();
+        const scanHistory = [];
+        let currentBannerAlertId = '';
+
+        function escHtml(v) {
+            return String(v || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        function normStr(s) {
+            return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+        }
+        function normId(id) {
+            return String(id || '').trim().substring(0, 9).toUpperCase();
+        }
+
+        function upsertRecord(rec) {
+            if (!rec || rec.eventType === 'qr_scan_alert') return;
+            const incomingId = normId(rec.idRegistro);
+            const incomingName = normStr(rec.nombreInvitado);
+            if (!incomingId && !incomingName) return;
+
+            const existingIdx = rowsList.findIndex(item => {
+                const itemId = normId(item.idRegistro);
+                const itemName = normStr(item.nombreInvitado);
+                const idMatch = Boolean(incomingId && itemId && (itemId === incomingId || (Math.min(incomingId.length, itemId.length) >= 5 && (itemId.startsWith(incomingId) || incomingId.startsWith(itemId)))));
+                return idMatch || (incomingName && itemName && itemName === incomingName);
+            });
+
+            const cleanRec = {
+                idRegistro: incomingId || ('EC-' + Math.random().toString(36).substring(2, 8).toUpperCase()),
+                fechaHora: rec.fechaHora || '',
+                nombreInvitado: rec.nombreInvitado || '',
+                asistencia: rec.asistencia || 'Pendiente',
+                boletosConfirmados: Number(rec.boletosConfirmados || 0),
+                mesaAsignada: rec.mesaAsignada || 'Mesa General',
+                mensajeParaAnfitriones: rec.mensajeParaAnfitriones || '',
+                estadoCheckIn: rec.estadoCheckIn || 'PENDIENTE'
+            };
+
+            if (existingIdx >= 0) {
+                const prev = rowsList[existingIdx];
+                rowsList[existingIdx] = {
+                    idRegistro: prev.idRegistro || cleanRec.idRegistro,
+                    fechaHora: cleanRec.fechaHora || prev.fechaHora,
+                    nombreInvitado: cleanRec.nombreInvitado || prev.nombreInvitado,
+                    asistencia: cleanRec.asistencia || prev.asistencia,
+                    boletosConfirmados: cleanRec.boletosConfirmados,
+                    mesaAsignada: (cleanRec.mesaAsignada && cleanRec.mesaAsignada !== 'Mesa General') ? cleanRec.mesaAsignada : (prev.mesaAsignada || 'Mesa General'),
+                    mensajeParaAnfitriones: cleanRec.mensajeParaAnfitriones || prev.mensajeParaAnfitriones,
+                    estadoCheckIn: cleanRec.estadoCheckIn || prev.estadoCheckIn
+                };
+            } else {
+                rowsList.push(cleanRec);
+            }
+        }
+
+        initialRows.forEach(r => upsertRecord(r));
+
+        function handleIncomingScanAlert(alertObj, shouldBeep) {
+            if (!alertObj || alertObj.eventType !== 'qr_scan_alert') return;
+            const aid = String(alertObj.alertId || '');
+            if (aid && seenAlertIds.has(aid)) return;
+            if (aid) seenAlertIds.add(aid);
+
+            const statusType = alertObj.statusType || (alertObj.foundOnList ? 'success' : 'danger');
+            const summaryLabel = alertObj.foundOnList
+                ? ('✅ EN LISTA: ' + (alertObj.guestName || alertObj.guestId || 'Invitado'))
+                : ('❌ NO EN LISTA: ' + (alertObj.guestName || alertObj.guestId || 'Desconocido'));
+            scanHistory.unshift({
+                statusType: statusType,
+                label: summaryLabel + (alertObj.fechaHora ? (' (' + String(alertObj.fechaHora).slice(-5) + ')') : '')
+            });
+            if (scanHistory.length > 5) scanHistory.length = 5;
+            renderScanHistory();
+
+            let dismissedId = '';
+            try { dismissedId = localStorage.getItem('ec_dismissed_' + TOPIC) || ''; } catch (e) {}
+            if (aid && aid === dismissedId) return;
+
+            currentBannerAlertId = aid;
+            const banner = document.getElementById('live-scan-banner');
+            const content = document.getElementById('live-scan-banner-content');
+            banner.className = 'live-scan-banner ' + statusType;
+            const gName = String(alertObj.guestName || 'Invitado').trim();
+            const headline = statusType === 'success'
+                ? ('✅ ' + gName + ' — ¡PUEDE ACCESAR!')
+                : (statusType === 'warning'
+                    ? (alertObj.foundOnList ? ('⚠️ ' + gName + ' — AVISO DE PASE EN LISTA') : '⚠️ ALERTA DE ACCESO')
+                    : '❌ EL INVITADO NO ESTÁ EN LA LISTA');
+            content.innerHTML =
+                '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">' + escHtml(headline) + '</div>' +
+                '<div style="font-size: 13px; font-weight: 600;">' + escHtml(alertObj.detailMessage || '') + '</div>';
+
+            if (shouldBeep) {
+                playBeep(statusType === 'success');
+            }
+        }
+
+        function renderScanHistory() {
+            const wrap = document.getElementById('scan-history-wrap');
+            const listEl = document.getElementById('scan-history-list');
+            if (!scanHistory.length) {
+                wrap.className = 'scan-history-wrap';
+                return;
+            }
+            wrap.className = 'scan-history-wrap active';
+            listEl.innerHTML = scanHistory.map(item =>
+                '<span class="scan-chip ' + escHtml(item.statusType) + '">' + escHtml(item.label) + '</span>'
+            ).join('');
+        }
+
+        function dismissLiveBanner() {
+            document.getElementById('live-scan-banner').className = 'live-scan-banner';
+            if (currentBannerAlertId) {
+                try { localStorage.setItem('ec_dismissed_' + TOPIC, currentBannerAlertId); } catch (e) {}
+            }
+        }
+
+        async function fetchCloudRsvps() {
+            // 1. Leer lista permanente desde el repo de Git (<slug>/invitados.json)
+            try {
+                const gitRes = await fetch("https://raw.githubusercontent.com/eventcraft-ai/invitations/main/" + EVENT_SLUG + "/invitados.json?t=" + Date.now(), { cache: 'no-store' });
+                if (gitRes.ok) {
+                    const gitList = await gitRes.json();
+                    if (Array.isArray(gitList)) {
+                        gitList.forEach(rec => upsertRecord(rec));
+                    }
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+            // 2. Complementar con notificaciones y alertas de escaneo QR en tiempo real
+            let latestAlert = null;
+            try {
+                const res = await fetch("https://ntfy.sh/" + TOPIC + "/json?poll=1&since=all");
+                const text = await res.text();
+                text.split('\n').forEach(line => {
+                    if (!line.trim()) return;
+                    try {
+                        const env = JSON.parse(line);
+                        if (env.event === 'message' && env.message && env.message.startsWith('{')) {
+                            const rec = JSON.parse(env.message);
+                            if (rec.eventType === 'qr_scan_alert') {
+                                latestAlert = rec;
+                            } else {
+                                upsertRecord(rec);
+                            }
+                        }
+                    } catch (e) {}
+                });
+            } catch (err) {
+                console.warn(err);
+            }
+            if (latestAlert) {
+                handleIncomingScanAlert(latestAlert, false);
+            }
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('sheet-body');
+            tbody.innerHTML = '';
+            let confirmedTickets = 0;
+
+            rowsList.forEach(r => {
+                if (String(r.asistencia).toLowerCase().startsWith('s')) {
+                    confirmedTickets += Number(r.boletosConfirmados || 0);
+                }
+                const tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td style="font-family: monospace; font-size: 12px;">' + escHtml(r.idRegistro || '') + '</td>' +
+                    '<td style="font-size: 12px; color: #64748b;">' + escHtml(r.fechaHora || '') + '</td>' +
+                    '<td style="font-weight: 700;">' + escHtml(r.nombreInvitado || '') + '</td>' +
+                    '<td class="' + (String(r.asistencia).startsWith('S') ? 'yes' : 'no') + '">' + escHtml(r.asistencia || '') + '</td>' +
+                    '<td style="font-weight: 700;">' + escHtml(r.boletosConfirmados || 0) + '</td>' +
+                    '<td>' + escHtml(r.mesaAsignada || '') + '</td>' +
+                    '<td style="font-size: 12px;">' + escHtml(r.mensajeParaAnfitriones || '') + '</td>' +
+                    '<td style="font-size: 12px; font-weight: 700;">' + escHtml(r.estadoCheckIn || 'PENDIENTE') + '</td>';
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-confirmed').textContent = confirmedTickets;
+            document.getElementById('stat-total').textContent = rowsList.length;
+        }
+
+        function downloadCsv() {
+            const headers = ['ID_Registro','Fecha_Hora','Nombre_Invitado','Asistencia (Sí/No)','Boletos_Confirmados','Mesa_Asignada','Mensaje_Para_Anfitriones','Estado_CheckIn'];
+            const lines = [headers.join(',')];
+            rowsList.forEach(r => {
+                const row = [
+                    r.idRegistro, r.fechaHora, r.nombreInvitado, r.asistencia,
+                    r.boletosConfirmados, r.mesaAsignada, r.mensajeParaAnfitriones, r.estadoCheckIn
+                ].map(v => '"' + String(v || '').replace(/"/g, '""') + '"');
+                lines.push(row.join(','));
+            });
+            const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Confirmaciones_RSVP.csv';
+            a.click();
+        }
+
+        function subscribeLiveEvents() {
+            if (typeof EventSource === 'undefined') return;
+            try {
+                const sse = new EventSource("https://ntfy.sh/" + TOPIC + "/sse");
+                sse.onmessage = function (evt) {
+                    try {
+                        const env = JSON.parse(evt.data);
+                        if (env.event === 'message' && env.message && env.message.startsWith('{')) {
+                            const rec = JSON.parse(env.message);
+                            if (rec.eventType === 'qr_scan_alert') {
+                                handleIncomingScanAlert(rec, true);
+                            } else {
+                                upsertRecord(rec);
+                                renderTable();
+                            }
+                        }
+                    } catch (e) {}
+                };
+            } catch (e) {}
+        }
+
+        renderTable();
+        fetchCloudRsvps();
+        subscribeLiveEvents();
+        setInterval(fetchCloudRsvps, 6000);
+
+        // ==========================================
+        // ESCÁNER QR WEB PARA CUALQUIER TELÉFONO / PC
+        // ==========================================
+        let html5QrCode = null;
+        let isProcessingScan = false;
+
+        function openScannerModal() {
+            document.getElementById('scanner-modal').classList.add('active');
+            isProcessingScan = false;
+            const feedback = document.getElementById('scan-feedback');
+            feedback.className = 'scan-result-card';
+            feedback.style.display = '';
+            feedback.innerHTML = '';
+
+            if (!html5QrCode && typeof Html5Qrcode !== 'undefined') {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+            if (!html5QrCode) {
+                feedback.className = 'scan-result-card warning';
+                feedback.innerHTML = '<strong>⚠️ Escáner en modo manual:</strong> Escribe o pega el código EC-XXXXXX o el nombre arriba para verificar si está en la lista.';
+                return;
+            }
+
+            const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onQrCodeScanned,
+                (errorMessage) => { /* scanning errors ignored */ }
+            ).catch(err => {
+                feedback.className = 'scan-result-card warning';
+                feedback.innerHTML = '<strong>⚠️ Cámara no disponible:</strong> Permite el acceso a la cámara o usa el campo superior para verificar el código/nombre manualmente.';
+            });
+        }
+
+        function closeScannerModal() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                }).catch(() => {
+                    document.getElementById('scanner-modal').classList.remove('active');
+                });
+            } else {
+                document.getElementById('scanner-modal').classList.remove('active');
+            }
+        }
+
+        function resetScannerFeedback() {
+            isProcessingScan = false;
+            const feedback = document.getElementById('scan-feedback');
+            if (feedback) {
+                feedback.className = 'scan-result-card';
+                feedback.style.display = '';
+                feedback.innerHTML = '';
+            }
+            const input = document.getElementById('manual-qr-input');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function verifyManualQrCode() {
+            const input = document.getElementById('manual-qr-input');
+            const val = (input ? input.value : '').trim();
+            if (!val) return;
+            isProcessingScan = false;
+            onQrCodeScanned(val);
+            input.value = '';
+        }
+
+        async function onQrCodeScanned(decodedText) {
+            if (isProcessingScan) return;
+            isProcessingScan = true;
+
+            try {
+                const cleanRaw = String(decodedText || '').trim();
+                let passData = null;
+                try {
+                    passData = JSON.parse(cleanRaw);
+                } catch (e) {
+                    if (cleanRaw.includes('invitado=') || cleanRaw.includes('pid=')) {
+                        const urlObj = new URL(cleanRaw);
+                        passData = {
+                            id: urlObj.searchParams.get('pid') || urlObj.searchParams.get('id') || '',
+                            guest: urlObj.searchParams.get('invitado') || '',
+                            passes: Number(urlObj.searchParams.get('pases') || 1),
+                            table: urlObj.searchParams.get('mesa') || 'Mesa General',
+                            event: urlObj.searchParams.get('evento') || urlObj.searchParams.get('event') || ''
+                        };
+                    }
+                }
+
+                const scannedId = normId(passData ? passData.id : cleanRaw);
+                const scannedName = normStr(passData ? (passData.guest || passData.name) : cleanRaw);
+                const scannedEvent = String(passData ? (passData.event || passData.evento || '') : '').trim().toLowerCase();
+                const wrongEvent = Boolean(scannedEvent && EVENT_SLUG && scannedEvent !== EVENT_SLUG.toLowerCase());
+
+                const matchedIndex = wrongEvent ? -1 : rowsList.findIndex(r => {
+                    const rId = normId(r.idRegistro);
+                    const rName = normStr(r.nombreInvitado);
+                    const idMatch = Boolean(scannedId && rId && (rId === scannedId || (Math.min(scannedId.length, rId.length) >= 5 && (rId.startsWith(scannedId) || scannedId.startsWith(rId)))));
+                    return idMatch || (scannedName && rName && rName === scannedName);
+                });
+
+                const feedback = document.getElementById('scan-feedback');
+                feedback.style.display = '';
+                const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const nowStamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+                let alertPayload = null;
+
+                if (matchedIndex === -1) {
+                    // ❌ NO SE ENCUENTRA EN LA LISTA DE INVITADOS
+                    const whoLabel = (passData && (passData.guest || passData.name))
+                        ? String(passData.guest || passData.name)
+                        : (scannedId || cleanRaw.substring(0, 24));
+                    const wrongEvtMsg = wrongEvent ? (' (QR de otro evento: ' + scannedEvent + ')') : '';
+                    const detail = 'El invitado ' + whoLabel + ' no está en la lista de invitados.' + wrongEvtMsg;
+
+                    feedback.className = 'scan-result-card danger';
+                    feedback.innerHTML =
+                        '<div style="display:inline-block; background:#dc2626; color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px; letter-spacing:0.06em; margin-bottom:6px;">ALERTA DE ACCESO</div>' +
+                        '<div style="font-size: 16px; font-weight: 900; color: #991b1b; margin-bottom: 4px;">❌ EL INVITADO NO ESTÁ EN LA LISTA</div>' +
+                        '<div style="font-size: 14px; font-weight: 700; color: #7f1d1d;">Escaneado: ' + escHtml(whoLabel) + escHtml(wrongEvtMsg) + '</div>' +
+                        '<div style="margin-top: 6px; font-size: 12px; color: #991b1b;">El invitado no se encuentra registrado en esta hoja RSVP. Acceso denegado.</div>';
+
+                    alertPayload = {
+                        eventType: 'qr_scan_alert',
+                        alertId: 'WEB-' + Date.now(),
+                        foundOnList: false,
+                        statusType: 'danger',
+                        guestName: whoLabel,
+                        guestId: scannedId,
+                        passes: 0,
+                        tableLabel: '',
+                        detailMessage: detail,
+                        source: 'web',
+                        fechaHora: nowStamp
+                    };
+                    playBeep(false);
+                } else {
+                    const guestRec = rowsList[matchedIndex];
+                    const alreadyCheckedIn = String(guestRec.estadoCheckIn).toUpperCase().includes('CHECK-IN OK');
+                    const declined = String(guestRec.asistencia).toLowerCase().startsWith('n');
+
+                    if (declined) {
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') SÍ está en la lista pero registró que NO asistiría (0 pases).';
+                        feedback.className = 'scan-result-card warning';
+                        feedback.innerHTML =
+                            '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ ' + escHtml(guestRec.nombreInvitado) + ' — CANCELÓ ASISTENCIA</div>' +
+                            '<div><strong>Estado:</strong> Registrado en lista pero marcó <strong>Asistencia: No</strong> (' + escHtml(guestRec.idRegistro) + ')</div>' +
+                            '<div style="margin-top: 4px; font-size: 12px;">0 pases autorizados.</div>';
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'warning',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: 0,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
+                        playBeep(false);
+                    } else if (alreadyCheckedIn) {
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') ya ingresó antes • ' + guestRec.mesaAsignada + ' (' + guestRec.estadoCheckIn + ').';
+                        feedback.className = 'scan-result-card warning';
+                        feedback.innerHTML =
+                            '<div style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">⚠️ ' + escHtml(guestRec.nombreInvitado) + ' — PASE YA UTILIZADO</div>' +
+                            '<div><strong>Invitado:</strong> ' + escHtml(guestRec.nombreInvitado) + '</div>' +
+                            '<div><strong>Boletos:</strong> ' + escHtml(guestRec.boletosConfirmados) + ' pases | <strong>Mesa:</strong> ' + escHtml(guestRec.mesaAsignada) + '</div>' +
+                            '<div style="margin-top: 6px; font-size: 11px;">Estado actual: <strong>' + escHtml(guestRec.estadoCheckIn) + '</strong></div>';
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'warning',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: guestRec.boletosConfirmados,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
+                        playBeep(false);
+                    } else {
+                        const checkInStatus = 'CHECK-IN OK (' + nowStr + ')';
+                        guestRec.estadoCheckIn = checkInStatus;
+                        guestRec.asistencia = 'Sí';
+                        const validPasses = Number(guestRec.boletosConfirmados || 1) || 1;
+                        const detail = guestRec.nombreInvitado + ' (' + guestRec.idRegistro + ') SÍ está en la lista y ¡puede accesar! • ' + validPasses + ' pases • ' + guestRec.mesaAsignada + '.';
+
+                        feedback.className = 'scan-result-card success';
+                        feedback.innerHTML =
+                            '<div style="display:inline-block; background:#16a34a; color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px; letter-spacing:0.06em; margin-bottom:6px;">VERIFICADO EN LISTA</div>' +
+                            '<div style="font-size: 18px; font-weight: 900; color: #14532d; margin-bottom: 4px;">✅ ' + escHtml(guestRec.nombreInvitado) + '</div>' +
+                            '<div style="font-size: 15px; font-weight: 800; color: #15803d;">¡PUEDE ACCESAR! Invitado confirmado en lista.</div>' +
+                            '<div style="margin-top: 6px; font-size: 13px; color: #166534;">🎟️ <strong>' + escHtml(validPasses) + ' Pases Autorizados</strong> &bull; 🪑 <strong>' + escHtml(guestRec.mesaAsignada) + '</strong></div>' +
+                            '<div style="margin-top: 8px;"><span class="badge-verified">Check-In OK • ' + escHtml(nowStr) + '</span></div>';
+
+                        alertPayload = {
+                            eventType: 'qr_scan_alert',
+                            alertId: 'WEB-' + Date.now(),
+                            foundOnList: true,
+                            statusType: 'success',
+                            guestName: guestRec.nombreInvitado,
+                            guestId: guestRec.idRegistro,
+                            passes: validPasses,
+                            tableLabel: guestRec.mesaAsignada,
+                            detailMessage: detail,
+                            source: 'web',
+                            fechaHora: nowStamp
+                        };
+                        playBeep(true);
+                        renderTable();
+                        runCatchingNtfyUpdate(guestRec);
+                    }
+                }
+
+                if (alertPayload) {
+                    handleIncomingScanAlert(alertPayload, false);
+                    runCatchingNtfyUpdate(alertPayload);
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setTimeout(() => { isProcessingScan = false; }, 1800);
+            }
+        }
+
+        async function runCatchingNtfyUpdate(record) {
+            try {
+                const payload = JSON.stringify(record);
+                await fetch('https://ntfy.sh/' + TOPIC, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+            } catch (e) {
+                console.warn('Could not post check-in to ntfy:', e);
+            }
+        }
+
+        function playBeep(success) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = success ? 'sine' : 'sawtooth';
+                osc.frequency.value = success ? 880 : 220;
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.start();
+                osc.stop(ctx.currentTime + (success ? 0.18 : 0.4));
+            } catch (e) {}
+        }
+    </script>
+</body>
+</html>
