@@ -823,6 +823,69 @@ body {
   object-position: center 20% !important;
 }
 
+/* Regla personalizada generada por Gemini AI: gira  las fotos de la galería  */
+.ec-gallery img,
+.ec-gallery-item,
+.ec-gallery-item img {
+  transform: rotate(-2deg) !important;
+}
+
+.ec-gallery img:nth-child(even),
+.ec-gallery-item:nth-child(even),
+.ec-gallery-item:nth-child(even) img {
+  transform: rotate(2deg) !important;
+}
+
+/* Regla personalizada generada por Gemini AI: gira la primera foto de la galería  */
+.ec-gallery img:first-of-type,
+.ec-gallery > *:first-child img,
+.ec-gallery-item:first-child img {
+  transform: rotate(90deg) !important;
+}
+
+/* Regla personalizada generada por Gemini AI: coloca en posición vertical las 2 fotos de la galería  */
+.ec-gallery,
+.ec-gallery-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: 1fr !important;
+}
+
+.ec-gallery img,
+.ec-gallery-grid img {
+  width: 100% !important;
+}
+
+/* Regla personalizada generada por Gemini AI: te pido que coloques en posición vertical las fotos de la galería que queden con la cara hacia arriba!! */
+.ec-gallery,
+.ec-gallery-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.ec-gallery img,
+.ec-gallery-item img {
+  width: 100% !important;
+  aspect-ratio: 3/4 !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+}
+
+/* Regla personalizada generada por Gemini AI: gira las fotos!! */
+img {
+  transform: rotate(-3deg) !important;
+}
+
+img:nth-of-type(even) {
+  transform: rotate(3deg) !important;
+}
+
+/* Regla personalizada generada por Gemini AI: gira foto de la portada pero que la presentación quede como está  */
+.ec-hero img {
+  transform: rotate(90deg) !important;
+}
+
     </style>
 </head>
 <body>
