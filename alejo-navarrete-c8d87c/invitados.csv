@@ -1,4 +1,5 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
-"EC-EBBE5F","2026-11-13 18:48","Ivana Navarrete","Pendiente",1,"Mesa 2","","PENDIENTE"
-"EC-CAF795","2026-11-13 18:48","alejo","Sí",2,"Mesa 1","","PENDIENTE"
-"EC-AE745F","2026-11-13 18:48","alejo N","Sí",2,"Mesa 1","","PENDIENTE"
+"EC-D0EE81","2026-11-13 18:50","Sebastian Navarrete y flia","Pendiente",3,"Mesa 2","","PENDIENTE"
+"EC-EBBE5F","2026-11-13 18:50","Ivana Navarrete","Sí",1,"Mesa 2","","PENDIENTE"
+"EC-CAF795","2026-11-13 18:50","alejo","Sí",2,"Mesa 1","","PENDIENTE"
+"EC-AE745F","2026-11-13 18:50","alejo N","Sí",2,"Mesa 1","","PENDIENTE"
