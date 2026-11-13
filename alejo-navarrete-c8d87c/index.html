@@ -774,6 +774,40 @@ body {
   transform: rotate(90deg) !important;
 }
 
+/* Regla personalizada generada por Gemini AI: coloca bien las fotos de la galería  */
+.ec-gallery, .ec-gallery-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 8px !important;
+  justify-content: center !important;
+}
+
+.ec-gallery img, .ec-gallery-grid img, .ec-gallery-item img, .ec-gallery-item {
+  width: 100% !important;
+  height: 180px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 12px !important;
+  display: block !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Regla personalizada generada por Gemini AI: gira la primera foto de la galería que quede en vertical  */
+.ec-gallery img:first-of-type,
+.ec-gallery-item:first-child img {
+  transform: rotate(90deg) !important;
+}
+
+/* Regla personalizada generada por Gemini AI: gira la primera foto de la portada en la galería  */
+.ec-hero img:first-of-type,
+.ec-gallery img:first-of-type,
+.ec-gallery-item:first-child img {
+  transform: rotate(90deg) !important;
+}
+
     </style>
 </head>
 <body>
