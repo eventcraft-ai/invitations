@@ -1,6 +1,7 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
-"EC-45B2B3","2026-11-13 18:51","Ramón Navarrete y flia","Pendiente",3,"Mesa 2","","PENDIENTE"
-"EC-D0EE81","2026-11-13 18:51","Sebastian Navarrete y flia","Sí",3,"Mesa 2","","PENDIENTE"
-"EC-EBBE5F","2026-11-13 18:51","Ivana Navarrete","Sí",1,"Mesa 2","","PENDIENTE"
-"EC-CAF795","2026-11-13 18:51","alejo","Sí",2,"Mesa 1","","PENDIENTE"
-"EC-AE745F","2026-11-13 18:51","alejo N","Sí",2,"Mesa 1","","PENDIENTE"
+"EC-A967D7","2026-11-13 18:53","Amparo Céspedes y flia","Pendiente",3,"Mesa 3","","PENDIENTE"
+"EC-45B2B3","2026-11-13 18:53","Ramón Navarrete y flia","Sí",3,"Mesa 2","","PENDIENTE"
+"EC-D0EE81","2026-11-13 18:53","Sebastian Navarrete y flia","Sí",3,"Mesa 2","","PENDIENTE"
+"EC-EBBE5F","2026-11-13 18:53","Ivana Navarrete","Sí",1,"Mesa 2","","PENDIENTE"
+"EC-CAF795","2026-11-13 18:53","alejo","Sí",2,"Mesa 1","","PENDIENTE"
+"EC-AE745F","2026-11-13 18:53","alejo N","Sí",2,"Mesa 1","","PENDIENTE"
