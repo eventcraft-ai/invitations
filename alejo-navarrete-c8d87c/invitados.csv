@@ -1,5 +1,6 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
-"EC-413A35","2026-11-13 19:47","Martina Cajal","Pendiente",1,"Mesa 5","","PENDIENTE"
+"EC-49DD3F","2026-11-13 19:47","Uriel Villarreal","Pendiente",1,"Mesa 5","","PENDIENTE"
+"EC-413A35","2026-11-13 19:47","Martina Cajal","Sí",1,"Mesa 5","","PENDIENTE"
 "EC-56E09F","2026-11-13 19:47","Darío Sanchez y familia","Sí",3,"Mesa 5","","PENDIENTE"
 "EC-6839D6","2026-11-13 19:47","Brenda Sanchez y familia","Sí",4,"Mesa 5","","PENDIENTE"
 "EC-CAF795","2026-11-13 19:47","alejo","Sí",2,"Mesa 1","","PENDIENTE"
