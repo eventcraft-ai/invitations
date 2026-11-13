@@ -1,1 +1,102 @@
-[{"idRegistro":"EC-939AE0","fechaHora":"2026-11-13 19:02","nombreInvitado":"Lucas Navarrete y familia","asistencia":"Pendiente","boletosConfirmados":3,"mesaAsignada":"Mesa 2","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-10785A","fechaHora":"2026-11-13 19:02","nombreInvitado":"Lucía Lizarraga y familia","asistencia":"Sí","boletosConfirmados":4,"mesaAsignada":"Mesa 4","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-1E9B9B","fechaHora":"2026-11-13 19:02","nombreInvitado":"Rubén Navarrete","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa 2","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-3D1AC2","fechaHora":"2026-11-13 19:02","nombreInvitado":"Grace Cardozo y familia","asistencia":"Sí","boletosConfirmados":5,"mesaAsignada":"Mesa 3","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-A967D7","fechaHora":"2026-11-13 19:02","nombreInvitado":"Amparo Céspedes y flia","asistencia":"Sí","boletosConfirmados":3,"mesaAsignada":"Mesa 3","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-45B2B3","fechaHora":"2026-11-13 19:02","nombreInvitado":"Ramón Navarrete y flia","asistencia":"Sí","boletosConfirmados":3,"mesaAsignada":"Mesa 2","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-D0EE81","fechaHora":"2026-11-13 19:02","nombreInvitado":"Sebastian Navarrete y flia","asistencia":"Sí","boletosConfirmados":3,"mesaAsignada":"Mesa 2","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-EBBE5F","fechaHora":"2026-11-13 19:02","nombreInvitado":"Ivana Navarrete","asistencia":"Sí","boletosConfirmados":1,"mesaAsignada":"Mesa 2","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-CAF795","fechaHora":"2026-11-13 19:02","nombreInvitado":"alejo","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa 1","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"},{"idRegistro":"EC-AE745F","fechaHora":"2026-11-13 19:02","nombreInvitado":"alejo N","asistencia":"Sí","boletosConfirmados":2,"mesaAsignada":"Mesa 1","mensajeParaAnfitriones":"","estadoCheckIn":"PENDIENTE"}]
+[
+  {
+    "idRegistro": "EC-939AE0",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Lucas Navarrete y familia",
+    "asistencia": "Pendiente",
+    "boletosConfirmados": 3,
+    "mesaAsignada": "Mesa 2",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-10785A",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Lucía Lizarraga y familia",
+    "asistencia": "Sí",
+    "boletosConfirmados": 4,
+    "mesaAsignada": "Mesa 4",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-1E9B9B",
+    "fechaHora": "2026-11-13 22:05",
+    "nombreInvitado": "Rubén Navarrete",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa 2",
+    "mensajeParaAnfitriones": "Alejito que hermoso haber llegado a tu legado de recibirte con el apoyo incondicional de tus Amados Padres Laurita y Huguito,Felicitaciones Alejito",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-3D1AC2",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Grace Cardozo y familia",
+    "asistencia": "Sí",
+    "boletosConfirmados": 5,
+    "mesaAsignada": "Mesa 3",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-A967D7",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Amparo Céspedes y flia",
+    "asistencia": "Sí",
+    "boletosConfirmados": 3,
+    "mesaAsignada": "Mesa 3",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-45B2B3",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Ramón Navarrete y flia",
+    "asistencia": "Sí",
+    "boletosConfirmados": 3,
+    "mesaAsignada": "Mesa 2",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-D0EE81",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Sebastian Navarrete y flia",
+    "asistencia": "Sí",
+    "boletosConfirmados": 3,
+    "mesaAsignada": "Mesa 2",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-EBBE5F",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "Ivana Navarrete",
+    "asistencia": "Sí",
+    "boletosConfirmados": 1,
+    "mesaAsignada": "Mesa 2",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-CAF795",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "alejo",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa 1",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  },
+  {
+    "idRegistro": "EC-AE745F",
+    "fechaHora": "2026-11-13 19:02",
+    "nombreInvitado": "alejo N",
+    "asistencia": "Sí",
+    "boletosConfirmados": 2,
+    "mesaAsignada": "Mesa 1",
+    "mensajeParaAnfitriones": "",
+    "estadoCheckIn": "PENDIENTE"
+  }
+]
