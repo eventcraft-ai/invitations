@@ -1,4 +1,5 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
+"EC-36C972","2026-11-16 22:05","Marcos Ruíz","Pendiente",2,"Mesa 8","","PENDIENTE"
 "EC-047894","2026-11-16 22:05","Beto Lizarraga","Sí",2,"Mesa 4","","PENDIENTE"
 "EC-4FDB20","2026-11-16 22:05","María Ruiz","Sí",2,"Mesa 4","","PENDIENTE"
 "EC-E064A7","2026-11-16 22:05","Paola Ruiz","Sí",2,"Mesa 4","","PENDIENTE"
