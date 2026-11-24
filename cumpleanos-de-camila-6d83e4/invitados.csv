@@ -1,5 +1,6 @@
 ﻿ID_Registro,Fecha_Hora,Nombre_Invitado,Asistencia (Sí/No),Boletos_Confirmados,Mesa_Asignada,Mensaje_Para_Anfitriones,Estado_CheckIn
-"EC-03B7BA","2026-11-24 01:44","derek","Pendiente",2,"Mesa General","","PENDIENTE"
+"EC-FDE91A","2026-11-24 01:44","Cristopher","Pendiente",2,"Mesa General","","PENDIENTE"
+"EC-03B7BA","2026-11-24 01:44","derek","Sí",2,"Mesa General","","PENDIENTE"
 "EC-523FD0","2026-11-24 01:44","tia Jakeline","Sí",2,"Mesa General","","PENDIENTE"
 "EC-8064D9","2026-11-24 01:44","tia eva","Sí",2,"Mesa General","","PENDIENTE"
 "EC-A24356","2026-11-24 01:44","karol","Sí",2,"Mesa General","","PENDIENTE"
